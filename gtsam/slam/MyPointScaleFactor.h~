@@ -1,0 +1,64 @@
+/* ----------------------------------------------------------------------------
+
+ * GTSAM Copyright 2010, Georgia Tech Research Corporation,
+ * Atlanta, Georgia 30332-0415
+ * All Rights Reserved
+ * Authors: Frank Dellaert, et al. (see THANKS for the full author list)
+
+ * See LICENSE for the license information
+
+ * -------------------------------------------------------------------------- */
+
+/**
+ *  @file  lago.h
+ *  @brief Initialize Pose2 in a factor graph using LAGO
+ *  (Linear Approximation for Graph Optimization). see papers:
+ *
+ *  L. Carlone, R. Aragues, J. Castellanos, and B. Bona, A fast and accurate
+ *  approximation for planar pose graph optimization, IJRR, 2014.
+ *
+ *  L. Carlone, R. Aragues, J.A. Castellanos, and B. Bona, A linear approximation
+ *  for graph-based simultaneous localization and mapping, RSS, 2011.
+ *
+ *  @param graph: nonlinear factor graph (can include arbitrary factors but we assume
+ *  that there is a subgraph involving Pose2 and betweenFactors). Also in the current
+ *  version we assume that there is an odometric spanning path (x0->x1, x1->x2, etc)
+ *  and a prior on x0. This assumption can be relaxed by using the extra argument
+ *  useOdometricPath = false, although this part of code is not stable yet.
+ *  @return Values: initial guess from LAGO (only pose2 are initialized)
+ *
+ *  @author Luca Carlone
+ *  @author Frank Dellaert
+ *  @date   May 14, 2014
+ */
+
+#pragma once
+
+#include <gtsam/geometry/concepts.h>
+#include <gtsam/base/Testable.h>
+#include <gtsam/nonlinear/NonlinearFactor.h>
+
+
+namespace gtsam {
+
+
+class MyPointScaleFactor: public NoiseModelFactor1<Pose2> {
+double mx_, my_,s; ///< X and Y measurements
+
+public:
+MyPointScaleFactor(Key j, double x, double y, double s, const SharedNoiseModel& model):
+ NoiseModelFactor1<Pose2>(model, j), mx_(x), my_(y) {}
+
+ Vector evaluateError(const Pose2& q,
+ boost::optional<Matrix&> H = boost::none) const
+ {
+ if (H) (*H) = Matrix_(2,3, 1.0,0.0,0.0, 0.0,1.0,0.0);
+ return Vector_(2, q.x() - s*mx_, q.y() - s*my_);
+ }
+/** return the measured */
+    const std::pair<double, double> measured() const {
+      return std::make_pair(mx_, my_);
+    }
+
+ };
+} // namespace gtsam

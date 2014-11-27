@@ -1,0 +1,1 @@
+/usr/bin/c++   -O3 -Wall -DNDEBUG -Wall    CMakeFiles/wrap.dir/wrap.cpp.o  -o wrap -rdynamic libwrap_lib.a -lboost_system -lboost_filesystem -lboost_thread -lboost_regex 

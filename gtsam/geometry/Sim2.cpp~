@@ -1,0 +1,135 @@
+/* ----------------------------------------------------------------------------
+
+ * GTSAM Copyright 2010, Georgia Tech Research Corporation, 
+ * Atlanta, Georgia 30332-0415
+ * All Rights Reserved
+ * Authors: Frank Dellaert, et al. (see THANKS for the full author list)
+
+ * See LICENSE for the license information
+
+ * -------------------------------------------------------------------------- */
+
+/**
+ * @file  Sim2.cpp
+ * @brief 2D Similarity
+ */
+
+#include <gtsam/geometry/concepts.h>
+#include <gtsam/geometry/Sim2.h>
+#include <gtsam/base/Lie-inl.h>
+#include <gtsam/base/Testable.h>
+#include <boost/foreach.hpp>
+#include <cmath>
+#include <iostream>
+#include <iomanip>
+
+using namespace std;
+
+namespace gtsam {
+
+/** Explicit instantiation of base class to export members */
+INSTANTIATE_LIE(Sim2);
+
+/** instantiate concept checks */
+GTSAM_CONCEPT_POSE_INST(Sim2);
+
+static const Matrix I3 = eye(3), Z12 = zeros(1,2);
+static const Rot2 R_PI_2(Rot2::fromCosSin(0., 1.));
+
+/* ************************************************************************* */
+Matrix Sim2::matrix() const {
+  Matrix R = r_.matrix();
+  R = stack(2, &R, &Z12);
+  Matrix T = (Matrix(3, 1) <<  t_.x(), t_.y(), (1/s_)); //inverse of scale s_ added to the matrix
+  return collect(2, &R, &T);
+}
+
+/* ************************************************************************* */
+void Sim2::print(const string& s) const {
+  cout << s << "(" << t_.x() << ", " << t_.y() << ", " << r_.theta() << s_ << ")" << endl;
+}
+
+/* ************************************************************************* */
+bool Sim2::equals(const Sim2& q, double tol) const {
+  return t_.equals(q.t_, tol) && r_.equals(q.r_, tol) && fabs(s_ - q.s()) < tol ;
+}
+
+/* ************************************************************************* */
+Sim2 Sim2::Expmap(const Vector& xi) {
+  assert(xi.size() == 4);
+  Point2 v(xi(0),xi(1));
+  double w = xi(2);
+  double lambda = xi(3);
+  if (std::abs(w) < 1e-10)
+    return Sim2(xi[0], xi[1], xi[2], xi[3]); //check its scale needs exp mostly
+  else {
+    Rot2 R(Rot2::fromAngle(w));    
+	
+    /*
+     * From Lie groups for computer vision - Ethan Eade,  eq 60 - 68
+     
+    double A = R.s()/w;
+    double B = (1 - R.c())/(w*w);
+    double C = (w - R.s())/(w*w*w);
+    double alpha = (lambda*lambda)/((lambda*lambda) + (w*w));
+    double sc = exp(lambda); //Check if exp works!
+    double X =	alpha*((1 - (1/sc))/(lambda)) + (1 - alpha)*(A - lambda*B);
+    double Y =	alpha*(((1/sc) - 1 + lambda) / (lambda*lambda)) + (1 - alpha)*(B - (lambda*C));
+  
+    Point2 t = Point2(X*xi(0) - w*Y*xi(1), w*Y*xi(0) + X*xi(1));
+    
+    return shit here
+	
+	*/
+  
+
+    /* Taken from Toon opensource library 
+     
+
+    Vector(3) coeff = Vector(3);
+    double s = xi(3);
+    double t = xi(2);
+
+    const double es = std::exp(s);
+
+    // 4 cases for s -> 0 and/or theta -> 0
+    // the Taylor expansions were calculated with Maple 12 and truncated at the 3rd power,
+    // such that eps^3 < 1e-18 which results in approximately 1 + eps^3 = 1
+    const double eps = 1e-6;
+
+    if(fabs(s) < eps && fabs(t) < eps){
+		coeff(0) = 1 + s/2 + s*s/6;
+		coeff(1) = 1/2 + s/3 - t*t/24 + s*s/8;
+		coeff(2) = 1/6 + s/8 - t*t/120 + s*s/20;
+    } else if(fabs(s) < eps) {
+		coeff(0) = 1 + s/2 + s*s/6;
+		coeff(1) = (1-cos(t))/(t*t) + (sin(t)-cos(t)*t)*s/(t*t*t)+(2*sin(t)*t-t*t*cos(t)-2+2*cos(t))*s*s/(2*t*t*t*t);
+		coeff(2) = (t-sin(t))/(t*t*t) - (-t*t-2+2*cos(t)+2*sin(t)*t)*s/(2*t*t*t*t) - (-t*t*t+6*cos(t)*t+3*sin(t)*t*t-6*sin(t))*s*s/(6*t*t*t*t*t);
+    } else if(fabs(t) < eps) {
+		coeff(0) = (es - 1)/s;
+		coeff(1) = (s*es+1-es)/(s*s) - (6*s*es+6-6*es+es*s*s*s-3*es*s*s)*t*t/(6*s*s*s*s);
+		coeff(2) = (es*s*s-2*s*es+2*es-2)/(2*s*s*s) - (es*s*s*s*s-4*es*s*s*s+12*es*s*s-24*s*es+24*es-24)*t*t/(24*s*s*s*s*s);
+    } else {
+		const double a = es * sin(t);
+		const double b = es * cos(t);
+		const double inv_s_theta = 1/(s*s + t*t);
+
+		coeff(0) = (es - 1)/s;
+		coeff(1) = (a*s + (1-b)*t) * inv_s_theta / t;
+		coeff(2) = (coeff(0) - ((b-1)*s + a*t) * inv_s_theta) / (t*t);
+    }
+
+
+    Vector(2) cross = (Vector(2) << -(xi(2)*xi(1)),(xi(2)*xi(0)));
+    Point2 t = Point2(1.,1.);//coeff[2] * mu.template slice<0,2>() + TooN::operator*(coeff[1], cross);
+
+  */
+    double es = 1.0;
+    return Sim2(R, t, es);
+}
+}
+
+
+
+/* ************************************************************************* */
+} // namespace gtsam

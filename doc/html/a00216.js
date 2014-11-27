@@ -1,0 +1,25 @@
+var a00216 =
+[
+    [ "Rot2", "a00216.html#ae1383d61756e94cd2cbb837a00078ee2", null ],
+    [ "Rot2", "a00216.html#acda969716a9ad7e96bc817a22eefe83d", null ],
+    [ "between", "a00216.html#a6d1f7384fba7444a281ee584587d2649", null ],
+    [ "c", "a00216.html#a81de300dabc9362d8be873c4b342561d", null ],
+    [ "compose", "a00216.html#ab0aed3ddc776ff4503f698ca8995cc42", null ],
+    [ "degrees", "a00216.html#a989cc078b870873cfd807ad2cc86e38e", null ],
+    [ "dim", "a00216.html#a75f130b0d4c82ad3309e23ad14d5eb3c", null ],
+    [ "equals", "a00216.html#afee1838cc7ccad624418fd82b3dea707", null ],
+    [ "inverse", "a00216.html#a03d74f7868f3d4387f105d1cf8b5a1f3", null ],
+    [ "localCoordinates", "a00216.html#aacccd418a3f5bb9460342d40a062ae30", null ],
+    [ "matrix", "a00216.html#a039022923109842b588d64eae9d36c72", null ],
+    [ "operator*", "a00216.html#a34c1a8efb10cd3a3ae6e1e104436569b", null ],
+    [ "operator*", "a00216.html#a3b1d48c5451eb723fcafd27e1d28a004", null ],
+    [ "print", "a00216.html#a1a5b57b108fd5f6295fc8bf6c42c8017", null ],
+    [ "retract", "a00216.html#a179241f565243ea9de5f0edbf34c67e6", null ],
+    [ "rotate", "a00216.html#a1d82be8eb57ff156e6173b71767798da", null ],
+    [ "s", "a00216.html#a5199287b765633a70eb30b594ee7dfa0", null ],
+    [ "theta", "a00216.html#a19234f7d5eb2402b5f7bbf342c2410f9", null ],
+    [ "transpose", "a00216.html#aba3cd39e3a9235e044ce8539f6df0ea3", null ],
+    [ "unit", "a00216.html#a195de9535552159a3b1be8dba52554b5", null ],
+    [ "unrotate", "a00216.html#a5521a3ce50251d5c549cd3b3d01117e6", null ],
+    [ "boost::serialization::access", "a00216.html#ac98d07dd8f7b70e16ccb9a01abf56b9c", null ]
+];

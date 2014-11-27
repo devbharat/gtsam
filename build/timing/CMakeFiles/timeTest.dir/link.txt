@@ -1,0 +1,1 @@
+/usr/bin/c++   -O3 -Wall -DNDEBUG -Wall    CMakeFiles/timeTest.dir/timeTest.cpp.o  -o timeTest -rdynamic ../gtsam/libgtsam.so.3.2.0 -lboost_serialization -lboost_system -lboost_filesystem -lboost_thread -lboost_date_time -lboost_regex -lboost_timer -lboost_chrono -ltbb -ltbbmalloc -Wl,-rpath,/home/bharat/gtsam/gtsam-3.2.0/build/gtsam 

@@ -1,0 +1,1 @@
+/usr/bin/c++   -O3 -Wall -DNDEBUG -Wall    CMakeFiles/testWrap.dir/testWrap.cpp.o  -o testWrap -rdynamic ../../CppUnitLite/libCppUnitLite.a ../libwrap_lib.a -lboost_system -lboost_filesystem -lboost_thread -lboost_regex 
