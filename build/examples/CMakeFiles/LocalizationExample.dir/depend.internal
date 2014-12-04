@@ -13,6 +13,7 @@ examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o
  ../gtsam/3rdparty/Eigen/Eigen/LU
  ../gtsam/3rdparty/Eigen/Eigen/QR
  ../gtsam/3rdparty/Eigen/Eigen/SVD
+ ../gtsam/3rdparty/Eigen/Eigen/StdVector
  ../gtsam/3rdparty/Eigen/Eigen/src/Cholesky/LDLT.h
  ../gtsam/3rdparty/Eigen/Eigen/src/Cholesky/LLT.h
  ../gtsam/3rdparty/Eigen/Eigen/src/Cholesky/LLT_MKL.h
@@ -194,6 +195,8 @@ examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o
  ../gtsam/3rdparty/Eigen/Eigen/src/SVD/JacobiSVD.h
  ../gtsam/3rdparty/Eigen/Eigen/src/SVD/JacobiSVD_MKL.h
  ../gtsam/3rdparty/Eigen/Eigen/src/SVD/UpperBidiagonalization.h
+ ../gtsam/3rdparty/Eigen/Eigen/src/StlSupport/StdVector.h
+ ../gtsam/3rdparty/Eigen/Eigen/src/StlSupport/details.h
  ../gtsam/3rdparty/Eigen/Eigen/src/misc/Image.h
  ../gtsam/3rdparty/Eigen/Eigen/src/misc/Kernel.h
  ../gtsam/3rdparty/Eigen/Eigen/src/misc/Solve.h
@@ -204,6 +207,10 @@ examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o
  ../gtsam/3rdparty/Eigen/Eigen/src/plugins/CommonCwiseUnaryOps.h
  ../gtsam/3rdparty/Eigen/Eigen/src/plugins/MatrixCwiseBinaryOps.h
  ../gtsam/3rdparty/Eigen/Eigen/src/plugins/MatrixCwiseUnaryOps.h
+ ../gtsam/3rdparty/Sophus/sophus/scso3.h
+ ../gtsam/3rdparty/Sophus/sophus/se3.h
+ ../gtsam/3rdparty/Sophus/sophus/sim3.h
+ ../gtsam/3rdparty/Sophus/sophus/so3.h
  ../gtsam/base/ConcurrentMap.h
  ../gtsam/base/DerivedValue.h
  ../gtsam/base/FastDefaultAllocator.h
@@ -223,9 +230,14 @@ examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o
  ../gtsam/base/VerticalBlockMatrix.h
  ../gtsam/base/timing.h
  ../gtsam/base/types.h
+ ../gtsam/geometry/Moses3.h
  ../gtsam/geometry/Point2.h
+ ../gtsam/geometry/Point3.h
  ../gtsam/geometry/Pose2.h
+ ../gtsam/geometry/Pose3.h
  ../gtsam/geometry/Rot2.h
+ ../gtsam/geometry/Rot3.h
+ ../gtsam/geometry/Unit3.h
  ../gtsam/global_includes.h
  ../gtsam/inference/BayesTree.h
  ../gtsam/inference/BayesTreeCliqueBase.h

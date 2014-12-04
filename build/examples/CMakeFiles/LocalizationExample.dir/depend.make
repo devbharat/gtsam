@@ -12,6 +12,7 @@ examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/LU
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/QR
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/SVD
+examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/StdVector
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/src/Cholesky/LDLT.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/src/Cholesky/LLT.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/src/Cholesky/LLT_MKL.h
@@ -193,6 +194,8 @@ examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/src/SVD/JacobiSVD.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/src/SVD/JacobiSVD_MKL.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/src/SVD/UpperBidiagonalization.h
+examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/src/StlSupport/StdVector.h
+examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/src/StlSupport/details.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/src/misc/Image.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/src/misc/Kernel.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/src/misc/Solve.h
@@ -203,6 +206,10 @@ examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/src/plugins/CommonCwiseUnaryOps.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/src/plugins/MatrixCwiseBinaryOps.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Eigen/Eigen/src/plugins/MatrixCwiseUnaryOps.h
+examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Sophus/sophus/scso3.h
+examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Sophus/sophus/se3.h
+examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Sophus/sophus/sim3.h
+examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/3rdparty/Sophus/sophus/so3.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/base/ConcurrentMap.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/base/DerivedValue.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/base/FastDefaultAllocator.h
@@ -222,9 +229,14 @@ examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/base/VerticalBlockMatrix.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/base/timing.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/base/types.h
+examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/geometry/Moses3.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/geometry/Point2.h
+examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/geometry/Point3.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/geometry/Pose2.h
+examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/geometry/Pose3.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/geometry/Rot2.h
+examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/geometry/Rot3.h
+examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/geometry/Unit3.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/global_includes.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/inference/BayesTree.h
 examples/CMakeFiles/LocalizationExample.dir/LocalizationExample.cpp.o: ../gtsam/inference/BayesTreeCliqueBase.h

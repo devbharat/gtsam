@@ -53,6 +53,7 @@ IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
     "/home/bharat/gtsam/gtsam-3.2.0/gtsam/geometry/CalibratedCamera.h"
     "/home/bharat/gtsam/gtsam-3.2.0/gtsam/geometry/triangulation.h"
     "/home/bharat/gtsam/gtsam-3.2.0/gtsam/geometry/SimpleCamera.h"
+    "/home/bharat/gtsam/gtsam-3.2.0/gtsam/geometry/Moses3.h"
     "/home/bharat/gtsam/gtsam-3.2.0/gtsam/geometry/Pose2.h"
     "/home/bharat/gtsam/gtsam-3.2.0/gtsam/geometry/PinholeCamera.h"
     "/home/bharat/gtsam/gtsam-3.2.0/gtsam/geometry/StereoCamera.h"

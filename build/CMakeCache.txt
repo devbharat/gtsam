@@ -276,7 +276,7 @@ DOXYGEN_DOT_PATH:FILEPATH=/usr/bin
 //Doxygen documentation generation tool (http://www.doxygen.org)
 DOXYGEN_EXECUTABLE:FILEPATH=/usr/bin/doxygen
 
-//Path to a file.
+//Where can the signature_of_eigen3_matrix_library library be found
 EIGEN3_INCLUDE_DIR:PATH=/usr/include/eigen3
 
 //Path to a file.

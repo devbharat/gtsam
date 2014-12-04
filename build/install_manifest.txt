@@ -387,6 +387,12 @@
 /usr/local/include/gtsam/3rdparty/Eigen/unsupported//Eigen/src/MatrixFunctions/MatrixExponential.h
 /usr/local/include/gtsam/3rdparty/Eigen/unsupported//Eigen/src/MatrixFunctions/MatrixFunction.h
 /usr/local/include/gtsam/3rdparty/Eigen/unsupported//Eigen/src/MatrixFunctions/MatrixLogarithm.h
+/usr/local/include/gtsam/3rdparty/Sophus/sophus/se2.h
+/usr/local/include/gtsam/3rdparty/Sophus/sophus/scso3.h
+/usr/local/include/gtsam/3rdparty/Sophus/sophus/se3.h
+/usr/local/include/gtsam/3rdparty/Sophus/sophus/so2.h
+/usr/local/include/gtsam/3rdparty/Sophus/sophus/so3.h
+/usr/local/include/gtsam/3rdparty/Sophus/sophus/sim3.h
 /usr/local/include/sophus/se2.h
 /usr/local/include/sophus/scso3.h
 /usr/local/include/sophus/se3.h
@@ -447,6 +453,7 @@
 /usr/local/include/gtsam/geometry/CalibratedCamera.h
 /usr/local/include/gtsam/geometry/triangulation.h
 /usr/local/include/gtsam/geometry/SimpleCamera.h
+/usr/local/include/gtsam/geometry/Moses3.h
 /usr/local/include/gtsam/geometry/Pose2.h
 /usr/local/include/gtsam/geometry/PinholeCamera.h
 /usr/local/include/gtsam/geometry/StereoCamera.h

@@ -1158,6 +1158,20 @@ boost/math/special_functions/fpclassify.hpp
 boost/math/constants/constants.hpp
 -
 
+../gtsam/geometry/Moses3.h
+gtsam/config.h
+-
+gtsam/geometry/Pose3.h
+-
+gtsam/base/DerivedValue.h
+-
+gtsam/geometry/Point3.h
+-
+gtsam/geometry/Rot3.h
+-
+gtsam/3rdparty/Sophus/sophus/sim3.h
+-
+
 ../gtsam/geometry/Point2.h
 boost/serialization/nvp.hpp
 -
@@ -1244,8 +1258,8 @@ gtsam/config.h
 gtsam/base/types.h
 -
 
-/home/bharat/gtsam/gtsam-3.2.0/gtsam/geometry/Pose3.cpp
-gtsam/geometry/Pose3.h
+/home/bharat/gtsam/gtsam-3.2.0/gtsam/geometry/Moses3.cpp
+gtsam/geometry/Moses3.h
 -
 gtsam/geometry/Pose2.h
 -
@@ -1258,8 +1272,6 @@ boost/foreach.hpp
 iostream
 -
 cmath
--
-gtsam/3rdparty/Sophus/sophus/sim3.h
 -
 
 gtsam/3rdparty/gtsam_eigen_includes.h

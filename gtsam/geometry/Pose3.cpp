@@ -21,7 +21,6 @@
 #include <boost/foreach.hpp>
 #include <iostream>
 #include <cmath>
-#include <gtsam/3rdparty/Sophus/sophus/sim3.h>
 
 using namespace std;
 

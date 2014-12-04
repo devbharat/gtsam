@@ -191,6 +191,8 @@ SET(CMAKE_DEPEND_INFO_FILES
   "gtsam/geometry/tests/CMakeFiles/testCalibratedCamera.run.dir/DependInfo.cmake"
   "gtsam/geometry/tests/CMakeFiles/testEssentialMatrix.dir/DependInfo.cmake"
   "gtsam/geometry/tests/CMakeFiles/testEssentialMatrix.run.dir/DependInfo.cmake"
+  "gtsam/geometry/tests/CMakeFiles/testMoses3.dir/DependInfo.cmake"
+  "gtsam/geometry/tests/CMakeFiles/testMoses3.run.dir/DependInfo.cmake"
   "gtsam/geometry/tests/CMakeFiles/testPinholeCamera.dir/DependInfo.cmake"
   "gtsam/geometry/tests/CMakeFiles/testPinholeCamera.run.dir/DependInfo.cmake"
   "gtsam/geometry/tests/CMakeFiles/testPoint2.dir/DependInfo.cmake"

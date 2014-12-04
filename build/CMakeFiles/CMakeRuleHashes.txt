@@ -66,6 +66,7 @@ d3c0b544b65bf405c7a1feebcefd037e gtsam/geometry/tests/CMakeFiles/testCal3Bundler
 7259d9b3b09a060d6706224a6fc96469 gtsam/geometry/tests/CMakeFiles/testCal3_S2.run
 44ac45e879a26078cac58ac366918b4d gtsam/geometry/tests/CMakeFiles/testCalibratedCamera.run
 7115f2d9974244133cabca6af5c96273 gtsam/geometry/tests/CMakeFiles/testEssentialMatrix.run
+39b0a30ffd63a53d535f4269a7447ca8 gtsam/geometry/tests/CMakeFiles/testMoses3.run
 0c00adad684e4eac66480758d3453838 gtsam/geometry/tests/CMakeFiles/testPinholeCamera.run
 9641fd8c7d89467a863b1505c2fc914a gtsam/geometry/tests/CMakeFiles/testPoint2.run
 967a48191ea5deedfb01fe0725883d2c gtsam/geometry/tests/CMakeFiles/testPoint3.run

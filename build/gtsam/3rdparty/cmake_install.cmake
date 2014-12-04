@@ -256,6 +256,10 @@ IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
   FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/gtsam/3rdparty/Eigen/unsupported/" TYPE DIRECTORY FILES "/home/bharat/gtsam/gtsam-3.2.0/gtsam/3rdparty/Eigen/unsupported/Eigen" FILES_MATCHING REGEX "/[^/]*\\.h$")
 ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
 
+IF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+  FILE(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/gtsam/3rdparty/Sophus" TYPE DIRECTORY FILES "/home/bharat/gtsam/gtsam-3.2.0/gtsam/3rdparty/Sophus/sophus" FILES_MATCHING REGEX "/[^/]*\\.h$")
+ENDIF(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+
 IF(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   INCLUDE("/home/bharat/gtsam/gtsam-3.2.0/build/gtsam/3rdparty/Sophus/cmake_install.cmake")

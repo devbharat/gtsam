@@ -194,6 +194,8 @@
 /home/bharat/gtsam/gtsam-3.2.0/build/tests/CMakeFiles/testMarginals.run.dir
 /home/bharat/gtsam/gtsam-3.2.0/build/gtsam/base/tests/CMakeFiles/testMatrix.dir
 /home/bharat/gtsam/gtsam-3.2.0/build/gtsam/base/tests/CMakeFiles/testMatrix.run.dir
+/home/bharat/gtsam/gtsam-3.2.0/build/gtsam/geometry/tests/CMakeFiles/testMoses3.dir
+/home/bharat/gtsam/gtsam-3.2.0/build/gtsam/geometry/tests/CMakeFiles/testMoses3.run.dir
 /home/bharat/gtsam/gtsam-3.2.0/build/gtsam/linear/tests/CMakeFiles/testNoiseModel.dir
 /home/bharat/gtsam/gtsam-3.2.0/build/gtsam/linear/tests/CMakeFiles/testNoiseModel.run.dir
 /home/bharat/gtsam/gtsam-3.2.0/build/tests/CMakeFiles/testNonlinearEquality.dir

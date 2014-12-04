@@ -234,6 +234,150 @@ gtsam/fast:
 	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/CCOLAMD/Source/ccolamd_global.c.s
 .PHONY : 3rdparty/CCOLAMD/Source/ccolamd_global.c.s
 
+3rdparty/Sophus/sophus/scso3.o: 3rdparty/Sophus/sophus/scso3.cpp.o
+.PHONY : 3rdparty/Sophus/sophus/scso3.o
+
+# target to build an object file
+3rdparty/Sophus/sophus/scso3.cpp.o:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/scso3.cpp.o
+.PHONY : 3rdparty/Sophus/sophus/scso3.cpp.o
+
+3rdparty/Sophus/sophus/scso3.i: 3rdparty/Sophus/sophus/scso3.cpp.i
+.PHONY : 3rdparty/Sophus/sophus/scso3.i
+
+# target to preprocess a source file
+3rdparty/Sophus/sophus/scso3.cpp.i:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/scso3.cpp.i
+.PHONY : 3rdparty/Sophus/sophus/scso3.cpp.i
+
+3rdparty/Sophus/sophus/scso3.s: 3rdparty/Sophus/sophus/scso3.cpp.s
+.PHONY : 3rdparty/Sophus/sophus/scso3.s
+
+# target to generate assembly for a file
+3rdparty/Sophus/sophus/scso3.cpp.s:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/scso3.cpp.s
+.PHONY : 3rdparty/Sophus/sophus/scso3.cpp.s
+
+3rdparty/Sophus/sophus/se2.o: 3rdparty/Sophus/sophus/se2.cpp.o
+.PHONY : 3rdparty/Sophus/sophus/se2.o
+
+# target to build an object file
+3rdparty/Sophus/sophus/se2.cpp.o:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/se2.cpp.o
+.PHONY : 3rdparty/Sophus/sophus/se2.cpp.o
+
+3rdparty/Sophus/sophus/se2.i: 3rdparty/Sophus/sophus/se2.cpp.i
+.PHONY : 3rdparty/Sophus/sophus/se2.i
+
+# target to preprocess a source file
+3rdparty/Sophus/sophus/se2.cpp.i:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/se2.cpp.i
+.PHONY : 3rdparty/Sophus/sophus/se2.cpp.i
+
+3rdparty/Sophus/sophus/se2.s: 3rdparty/Sophus/sophus/se2.cpp.s
+.PHONY : 3rdparty/Sophus/sophus/se2.s
+
+# target to generate assembly for a file
+3rdparty/Sophus/sophus/se2.cpp.s:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/se2.cpp.s
+.PHONY : 3rdparty/Sophus/sophus/se2.cpp.s
+
+3rdparty/Sophus/sophus/se3.o: 3rdparty/Sophus/sophus/se3.cpp.o
+.PHONY : 3rdparty/Sophus/sophus/se3.o
+
+# target to build an object file
+3rdparty/Sophus/sophus/se3.cpp.o:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/se3.cpp.o
+.PHONY : 3rdparty/Sophus/sophus/se3.cpp.o
+
+3rdparty/Sophus/sophus/se3.i: 3rdparty/Sophus/sophus/se3.cpp.i
+.PHONY : 3rdparty/Sophus/sophus/se3.i
+
+# target to preprocess a source file
+3rdparty/Sophus/sophus/se3.cpp.i:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/se3.cpp.i
+.PHONY : 3rdparty/Sophus/sophus/se3.cpp.i
+
+3rdparty/Sophus/sophus/se3.s: 3rdparty/Sophus/sophus/se3.cpp.s
+.PHONY : 3rdparty/Sophus/sophus/se3.s
+
+# target to generate assembly for a file
+3rdparty/Sophus/sophus/se3.cpp.s:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/se3.cpp.s
+.PHONY : 3rdparty/Sophus/sophus/se3.cpp.s
+
+3rdparty/Sophus/sophus/sim3.o: 3rdparty/Sophus/sophus/sim3.cpp.o
+.PHONY : 3rdparty/Sophus/sophus/sim3.o
+
+# target to build an object file
+3rdparty/Sophus/sophus/sim3.cpp.o:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/sim3.cpp.o
+.PHONY : 3rdparty/Sophus/sophus/sim3.cpp.o
+
+3rdparty/Sophus/sophus/sim3.i: 3rdparty/Sophus/sophus/sim3.cpp.i
+.PHONY : 3rdparty/Sophus/sophus/sim3.i
+
+# target to preprocess a source file
+3rdparty/Sophus/sophus/sim3.cpp.i:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/sim3.cpp.i
+.PHONY : 3rdparty/Sophus/sophus/sim3.cpp.i
+
+3rdparty/Sophus/sophus/sim3.s: 3rdparty/Sophus/sophus/sim3.cpp.s
+.PHONY : 3rdparty/Sophus/sophus/sim3.s
+
+# target to generate assembly for a file
+3rdparty/Sophus/sophus/sim3.cpp.s:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/sim3.cpp.s
+.PHONY : 3rdparty/Sophus/sophus/sim3.cpp.s
+
+3rdparty/Sophus/sophus/so2.o: 3rdparty/Sophus/sophus/so2.cpp.o
+.PHONY : 3rdparty/Sophus/sophus/so2.o
+
+# target to build an object file
+3rdparty/Sophus/sophus/so2.cpp.o:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/so2.cpp.o
+.PHONY : 3rdparty/Sophus/sophus/so2.cpp.o
+
+3rdparty/Sophus/sophus/so2.i: 3rdparty/Sophus/sophus/so2.cpp.i
+.PHONY : 3rdparty/Sophus/sophus/so2.i
+
+# target to preprocess a source file
+3rdparty/Sophus/sophus/so2.cpp.i:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/so2.cpp.i
+.PHONY : 3rdparty/Sophus/sophus/so2.cpp.i
+
+3rdparty/Sophus/sophus/so2.s: 3rdparty/Sophus/sophus/so2.cpp.s
+.PHONY : 3rdparty/Sophus/sophus/so2.s
+
+# target to generate assembly for a file
+3rdparty/Sophus/sophus/so2.cpp.s:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/so2.cpp.s
+.PHONY : 3rdparty/Sophus/sophus/so2.cpp.s
+
+3rdparty/Sophus/sophus/so3.o: 3rdparty/Sophus/sophus/so3.cpp.o
+.PHONY : 3rdparty/Sophus/sophus/so3.o
+
+# target to build an object file
+3rdparty/Sophus/sophus/so3.cpp.o:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/so3.cpp.o
+.PHONY : 3rdparty/Sophus/sophus/so3.cpp.o
+
+3rdparty/Sophus/sophus/so3.i: 3rdparty/Sophus/sophus/so3.cpp.i
+.PHONY : 3rdparty/Sophus/sophus/so3.i
+
+# target to preprocess a source file
+3rdparty/Sophus/sophus/so3.cpp.i:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/so3.cpp.i
+.PHONY : 3rdparty/Sophus/sophus/so3.cpp.i
+
+3rdparty/Sophus/sophus/so3.s: 3rdparty/Sophus/sophus/so3.cpp.s
+.PHONY : 3rdparty/Sophus/sophus/so3.s
+
+# target to generate assembly for a file
+3rdparty/Sophus/sophus/so3.cpp.s:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/3rdparty/Sophus/sophus/so3.cpp.s
+.PHONY : 3rdparty/Sophus/sophus/so3.cpp.s
+
 3rdparty/UFconfig/UFconfig.o: 3rdparty/UFconfig/UFconfig.c.o
 .PHONY : 3rdparty/UFconfig/UFconfig.o
 
@@ -977,6 +1121,30 @@ geometry/EssentialMatrix.s: geometry/EssentialMatrix.cpp.s
 geometry/EssentialMatrix.cpp.s:
 	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/geometry/EssentialMatrix.cpp.s
 .PHONY : geometry/EssentialMatrix.cpp.s
+
+geometry/Moses3.o: geometry/Moses3.cpp.o
+.PHONY : geometry/Moses3.o
+
+# target to build an object file
+geometry/Moses3.cpp.o:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/geometry/Moses3.cpp.o
+.PHONY : geometry/Moses3.cpp.o
+
+geometry/Moses3.i: geometry/Moses3.cpp.i
+.PHONY : geometry/Moses3.i
+
+# target to preprocess a source file
+geometry/Moses3.cpp.i:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/geometry/Moses3.cpp.i
+.PHONY : geometry/Moses3.cpp.i
+
+geometry/Moses3.s: geometry/Moses3.cpp.s
+.PHONY : geometry/Moses3.s
+
+# target to generate assembly for a file
+geometry/Moses3.cpp.s:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/CMakeFiles/gtsam.dir/build.make gtsam/CMakeFiles/gtsam.dir/geometry/Moses3.cpp.s
+.PHONY : geometry/Moses3.cpp.s
 
 geometry/Point2.o: geometry/Point2.cpp.o
 .PHONY : geometry/Point2.o
@@ -2704,6 +2872,24 @@ help:
 	@echo "... 3rdparty/CCOLAMD/Source/ccolamd_global.o"
 	@echo "... 3rdparty/CCOLAMD/Source/ccolamd_global.i"
 	@echo "... 3rdparty/CCOLAMD/Source/ccolamd_global.s"
+	@echo "... 3rdparty/Sophus/sophus/scso3.o"
+	@echo "... 3rdparty/Sophus/sophus/scso3.i"
+	@echo "... 3rdparty/Sophus/sophus/scso3.s"
+	@echo "... 3rdparty/Sophus/sophus/se2.o"
+	@echo "... 3rdparty/Sophus/sophus/se2.i"
+	@echo "... 3rdparty/Sophus/sophus/se2.s"
+	@echo "... 3rdparty/Sophus/sophus/se3.o"
+	@echo "... 3rdparty/Sophus/sophus/se3.i"
+	@echo "... 3rdparty/Sophus/sophus/se3.s"
+	@echo "... 3rdparty/Sophus/sophus/sim3.o"
+	@echo "... 3rdparty/Sophus/sophus/sim3.i"
+	@echo "... 3rdparty/Sophus/sophus/sim3.s"
+	@echo "... 3rdparty/Sophus/sophus/so2.o"
+	@echo "... 3rdparty/Sophus/sophus/so2.i"
+	@echo "... 3rdparty/Sophus/sophus/so2.s"
+	@echo "... 3rdparty/Sophus/sophus/so3.o"
+	@echo "... 3rdparty/Sophus/sophus/so3.i"
+	@echo "... 3rdparty/Sophus/sophus/so3.s"
 	@echo "... 3rdparty/UFconfig/UFconfig.o"
 	@echo "... 3rdparty/UFconfig/UFconfig.i"
 	@echo "... 3rdparty/UFconfig/UFconfig.s"
@@ -2797,6 +2983,9 @@ help:
 	@echo "... geometry/EssentialMatrix.o"
 	@echo "... geometry/EssentialMatrix.i"
 	@echo "... geometry/EssentialMatrix.s"
+	@echo "... geometry/Moses3.o"
+	@echo "... geometry/Moses3.i"
+	@echo "... geometry/Moses3.s"
 	@echo "... geometry/Point2.o"
 	@echo "... geometry/Point2.i"
 	@echo "... geometry/Point2.s"

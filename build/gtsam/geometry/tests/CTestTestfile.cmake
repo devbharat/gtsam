@@ -23,5 +23,6 @@ ADD_TEST(testStereoPoint2 "/home/bharat/gtsam/gtsam-3.2.0/build/gtsam/geometry/t
 ADD_TEST(testPinholeCamera "/home/bharat/gtsam/gtsam-3.2.0/build/gtsam/geometry/tests/testPinholeCamera")
 ADD_TEST(testPose3 "/home/bharat/gtsam/gtsam-3.2.0/build/gtsam/geometry/tests/testPose3")
 ADD_TEST(testSerializationGeometry "/home/bharat/gtsam/gtsam-3.2.0/build/gtsam/geometry/tests/testSerializationGeometry")
+ADD_TEST(testMoses3 "/home/bharat/gtsam/gtsam-3.2.0/build/gtsam/geometry/tests/testMoses3")
 ADD_TEST(testPoint2 "/home/bharat/gtsam/gtsam-3.2.0/build/gtsam/geometry/tests/testPoint2")
 ADD_TEST(testRot3Q "/home/bharat/gtsam/gtsam-3.2.0/build/gtsam/geometry/tests/testRot3Q")

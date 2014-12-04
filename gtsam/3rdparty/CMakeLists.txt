@@ -70,4 +70,7 @@ if(GTSAM_INSTALL_GEOGRAPHICLIB)
 endif()
 #btak
 add_subdirectory(Sophus)
-
+file(GLOB_RECURSE sophus_src "${CMAKE_CURRENT_SOURCE_DIR}/Sophus/sophus/*.cpp")
+install(DIRECTORY Sophus/sophus
+		DESTINATION include/gtsam/3rdparty/Sophus
+		FILES_MATCHING PATTERN "*.h")

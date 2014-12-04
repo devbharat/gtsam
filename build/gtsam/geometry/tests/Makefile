@@ -355,6 +355,34 @@ testEssentialMatrix.run/fast:
 .PHONY : testEssentialMatrix.run/fast
 
 # Convenience name for target.
+gtsam/geometry/tests/CMakeFiles/testMoses3.dir/rule:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f CMakeFiles/Makefile2 gtsam/geometry/tests/CMakeFiles/testMoses3.dir/rule
+.PHONY : gtsam/geometry/tests/CMakeFiles/testMoses3.dir/rule
+
+# Convenience name for target.
+testMoses3: gtsam/geometry/tests/CMakeFiles/testMoses3.dir/rule
+.PHONY : testMoses3
+
+# fast build rule for target.
+testMoses3/fast:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/geometry/tests/CMakeFiles/testMoses3.dir/build.make gtsam/geometry/tests/CMakeFiles/testMoses3.dir/build
+.PHONY : testMoses3/fast
+
+# Convenience name for target.
+gtsam/geometry/tests/CMakeFiles/testMoses3.run.dir/rule:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f CMakeFiles/Makefile2 gtsam/geometry/tests/CMakeFiles/testMoses3.run.dir/rule
+.PHONY : gtsam/geometry/tests/CMakeFiles/testMoses3.run.dir/rule
+
+# Convenience name for target.
+testMoses3.run: gtsam/geometry/tests/CMakeFiles/testMoses3.run.dir/rule
+.PHONY : testMoses3.run
+
+# fast build rule for target.
+testMoses3.run/fast:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/geometry/tests/CMakeFiles/testMoses3.run.dir/build.make gtsam/geometry/tests/CMakeFiles/testMoses3.run.dir/build
+.PHONY : testMoses3.run/fast
+
+# Convenience name for target.
 gtsam/geometry/tests/CMakeFiles/testPinholeCamera.dir/rule:
 	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f CMakeFiles/Makefile2 gtsam/geometry/tests/CMakeFiles/testPinholeCamera.dir/rule
 .PHONY : gtsam/geometry/tests/CMakeFiles/testPinholeCamera.dir/rule
@@ -918,6 +946,30 @@ testEssentialMatrix.cpp.s:
 	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/geometry/tests/CMakeFiles/testEssentialMatrix.dir/build.make gtsam/geometry/tests/CMakeFiles/testEssentialMatrix.dir/testEssentialMatrix.cpp.s
 .PHONY : testEssentialMatrix.cpp.s
 
+testMoses3.o: testMoses3.cpp.o
+.PHONY : testMoses3.o
+
+# target to build an object file
+testMoses3.cpp.o:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/geometry/tests/CMakeFiles/testMoses3.dir/build.make gtsam/geometry/tests/CMakeFiles/testMoses3.dir/testMoses3.cpp.o
+.PHONY : testMoses3.cpp.o
+
+testMoses3.i: testMoses3.cpp.i
+.PHONY : testMoses3.i
+
+# target to preprocess a source file
+testMoses3.cpp.i:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/geometry/tests/CMakeFiles/testMoses3.dir/build.make gtsam/geometry/tests/CMakeFiles/testMoses3.dir/testMoses3.cpp.i
+.PHONY : testMoses3.cpp.i
+
+testMoses3.s: testMoses3.cpp.s
+.PHONY : testMoses3.s
+
+# target to generate assembly for a file
+testMoses3.cpp.s:
+	cd /home/bharat/gtsam/gtsam-3.2.0/build && $(MAKE) -f gtsam/geometry/tests/CMakeFiles/testMoses3.dir/build.make gtsam/geometry/tests/CMakeFiles/testMoses3.dir/testMoses3.cpp.s
+.PHONY : testMoses3.cpp.s
+
 testPinholeCamera.o: testPinholeCamera.cpp.o
 .PHONY : testPinholeCamera.o
 
@@ -1306,6 +1358,8 @@ help:
 	@echo "... testCalibratedCamera.run"
 	@echo "... testEssentialMatrix"
 	@echo "... testEssentialMatrix.run"
+	@echo "... testMoses3"
+	@echo "... testMoses3.run"
 	@echo "... testPinholeCamera"
 	@echo "... testPinholeCamera.run"
 	@echo "... testPoint2"
@@ -1354,6 +1408,9 @@ help:
 	@echo "... testEssentialMatrix.o"
 	@echo "... testEssentialMatrix.i"
 	@echo "... testEssentialMatrix.s"
+	@echo "... testMoses3.o"
+	@echo "... testMoses3.i"
+	@echo "... testMoses3.s"
 	@echo "... testPinholeCamera.o"
 	@echo "... testPinholeCamera.i"
 	@echo "... testPinholeCamera.s"

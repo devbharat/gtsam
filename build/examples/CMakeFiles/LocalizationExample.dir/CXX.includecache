@@ -524,6 +524,14 @@ src/Eigen2Support/SVD.h
 src/Core/util/ReenableStupidWarnings.h
 ../gtsam/3rdparty/Eigen/Eigen/src/Core/util/ReenableStupidWarnings.h
 
+../gtsam/3rdparty/Eigen/Eigen/StdVector
+Core
+../gtsam/3rdparty/Eigen/Eigen/Core
+vector
+-
+src/StlSupport/StdVector.h
+../gtsam/3rdparty/Eigen/Eigen/src/StlSupport/StdVector.h
+
 ../gtsam/3rdparty/Eigen/Eigen/src/Cholesky/LDLT.h
 
 ../gtsam/3rdparty/Eigen/Eigen/src/Cholesky/LLT.h
@@ -996,6 +1004,12 @@ ParametrizedLine.h
 
 ../gtsam/3rdparty/Eigen/Eigen/src/SVD/UpperBidiagonalization.h
 
+../gtsam/3rdparty/Eigen/Eigen/src/StlSupport/StdVector.h
+details.h
+../gtsam/3rdparty/Eigen/Eigen/src/StlSupport/details.h
+
+../gtsam/3rdparty/Eigen/Eigen/src/StlSupport/details.h
+
 ../gtsam/3rdparty/Eigen/Eigen/src/misc/Image.h
 
 ../gtsam/3rdparty/Eigen/Eigen/src/misc/Kernel.h
@@ -1015,6 +1029,34 @@ ParametrizedLine.h
 ../gtsam/3rdparty/Eigen/Eigen/src/plugins/MatrixCwiseBinaryOps.h
 
 ../gtsam/3rdparty/Eigen/Eigen/src/plugins/MatrixCwiseUnaryOps.h
+
+../gtsam/3rdparty/Sophus/sophus/scso3.h
+gtsam/3rdparty/Eigen/Eigen/Core
+-
+gtsam/3rdparty/Eigen/Eigen/StdVector
+-
+gtsam/3rdparty/Eigen/Eigen/Geometry
+-
+so3.h
+../gtsam/3rdparty/Sophus/sophus/so3.h
+
+../gtsam/3rdparty/Sophus/sophus/se3.h
+so3.h
+../gtsam/3rdparty/Sophus/sophus/so3.h
+
+../gtsam/3rdparty/Sophus/sophus/sim3.h
+scso3.h
+../gtsam/3rdparty/Sophus/sophus/scso3.h
+se3.h
+../gtsam/3rdparty/Sophus/sophus/se3.h
+
+../gtsam/3rdparty/Sophus/sophus/so3.h
+gtsam/3rdparty/Eigen/Eigen/Core
+-
+gtsam/3rdparty/Eigen/Eigen/StdVector
+-
+gtsam/3rdparty/Eigen/Eigen/Geometry
+-
 
 ../gtsam/base/ConcurrentMap.h
 gtsam/global_includes.h
@@ -1238,6 +1280,20 @@ boost/math/special_functions/fpclassify.hpp
 boost/math/constants/constants.hpp
 -
 
+../gtsam/geometry/Moses3.h
+gtsam/config.h
+-
+gtsam/geometry/Pose3.h
+-
+gtsam/base/DerivedValue.h
+-
+gtsam/geometry/Point3.h
+-
+gtsam/geometry/Rot3.h
+-
+gtsam/3rdparty/Sophus/sophus/sim3.h
+-
+
 ../gtsam/geometry/Point2.h
 boost/serialization/nvp.hpp
 -
@@ -1246,6 +1302,18 @@ gtsam/base/DerivedValue.h
 gtsam/base/Matrix.h
 -
 gtsam/base/Lie.h
+-
+
+../gtsam/geometry/Point3.h
+gtsam/base/Matrix.h
+-
+gtsam/base/DerivedValue.h
+-
+gtsam/base/Lie.h
+-
+boost/serialization/nvp.hpp
+-
+cmath
 -
 
 ../gtsam/geometry/Pose2.h
@@ -1260,12 +1328,44 @@ gtsam/geometry/Point2.h
 gtsam/geometry/Rot2.h
 -
 
+../gtsam/geometry/Pose3.h
+gtsam/config.h
+-
+gtsam/base/DerivedValue.h
+-
+gtsam/geometry/Point3.h
+-
+gtsam/geometry/Rot3.h
+-
+
 ../gtsam/geometry/Rot2.h
 boost/optional.hpp
 -
 gtsam/base/DerivedValue.h
 -
 gtsam/geometry/Point2.h
+-
+
+../gtsam/geometry/Rot3.h
+gtsam/config.h
+-
+gtsam/base/DerivedValue.h
+-
+gtsam/base/Matrix.h
+-
+gtsam/geometry/Point3.h
+-
+gtsam/geometry/Unit3.h
+-
+
+../gtsam/geometry/Unit3.h
+gtsam/geometry/Point3.h
+-
+gtsam/base/DerivedValue.h
+-
+boost/random/mersenne_twister.hpp
+-
+boost/optional.hpp
 -
 
 ../gtsam/global_includes.h
@@ -1682,6 +1782,8 @@ gtsam/nonlinear/NonlinearFactor.h
 
 /home/bharat/gtsam/gtsam-3.2.0/examples/LocalizationExample.cpp
 gtsam/geometry/Pose2.h
+-
+gtsam/geometry/Moses3.h
 -
 gtsam/inference/Key.h
 -

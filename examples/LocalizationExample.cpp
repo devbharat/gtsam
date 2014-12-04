@@ -25,6 +25,10 @@
 
 // We will use Pose2 variables (x, y, theta) to represent the robot positions
 #include <gtsam/geometry/Pose2.h>
+#include <gtsam/geometry/Moses3.h>
+
+
+
 
 // We will use simple integer Keys to refer to the robot poses.
 #include <gtsam/inference/Key.h>
@@ -53,7 +57,9 @@
 #include <gtsam/nonlinear/Marginals.h>
 
 using namespace std;
+using namespace Sophus;
 using namespace gtsam;
+
 
 // Before we begin the example, we must create a custom unary factor to implement a
 // "GPS-like" functionality. Because standard GPS measurements provide information
@@ -64,6 +70,8 @@ using namespace gtsam;
 // also use a standard Gaussian noise model. Hence, we will derive our new factor from
 // the NoiseModelFactor1.
 #include <gtsam/nonlinear/NonlinearFactor.h>
+
+namespace gtsam{
 
 class UnaryFactor: public NoiseModelFactor1<Pose2> {
 
@@ -85,6 +93,7 @@ public:
   // The first is the 'evaluateError' function. This function implements the desired measurement
   // function, returning a vector of errors when evaluated at the provided variable value. It
   // must also calculate the Jacobians for this measurement function, if requested.
+
   Vector evaluateError(const Pose2& q, boost::optional<Matrix&> H = boost::none) const
   {
     // The measurement function for a GPS-like measurement is simple:
@@ -110,7 +119,7 @@ public:
 
 }; // UnaryFactor
 
-
+}
 int main(int argc, char** argv) {
 
   // 1. Create a factor graph container and add factors to it
@@ -118,25 +127,65 @@ int main(int argc, char** argv) {
 
   // 2a. Add odometry factors
   // For simplicity, we will use the same noise model for each odometry factor
-  noiseModel::Diagonal::shared_ptr odometryNoise = noiseModel::Diagonal::Sigmas((Vector(3) << 0.2, 0.2, 0.1));
+  noiseModel::Diagonal::shared_ptr odometryNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.2, 0.2, 0.1, 0.2, 0.2, 0.1, 0.1));
   // Create odometry (Between) factors between consecutive poses
-  graph.add(BetweenFactor<Pose2>(1, 2, Pose2(2.0, 0.0, 0.0), odometryNoise));
-  graph.add(BetweenFactor<Pose2>(2, 3, Pose2(2.0, 0.0, 0.0), odometryNoise));
+  
+
+
+
+  
+  Rot3 R1 = Rot3(Point3(1.0, 0.0 , 0.0),Point3(0.0, 1.0 , 0.0),Point3(0.0, 0.0 , 1.0));
+  Point3 Pp1(1.0,0.0,0.0);
+
+  Rot3 R2 = Rot3(Point3(1.0, 0.0 , 0.0),Point3(0.0, 1.0 , 0.0),Point3(0.0, 0.0 , 1.0));
+  Point3 Pp2(2.0,0.0,0.0);
+
+  graph.add(BetweenFactor<Moses3>(1, 2, Moses3(ScSO3(R1.matrix()),Pp1.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(2, 3, Moses3(ScSO3(R2.matrix()),Pp2.vector()), odometryNoise));
+  
+
+
+
+
+
+
+
+
+
+
+  //graph.add(BetweenFactor<Pose2>(1, 2, Pose2(2.0, 0.0, 0.0), odometryNoise));
+  //graph.add(BetweenFactor<Pose2>(2, 3, Pose2(2.0, 0.0, 0.0), odometryNoise));
 
   // 2b. Add "GPS-like" measurements
   // We will use our custom UnaryFactor for this.
-  noiseModel::Diagonal::shared_ptr unaryNoise = noiseModel::Diagonal::Sigmas((Vector(2) << 0.1, 0.1)); // 10cm std on x,y
-  graph.add(boost::make_shared<UnaryFactor>(1, 0.0, 0.0, unaryNoise));
-  graph.add(boost::make_shared<UnaryFactor>(2, 2.0, 0.0, unaryNoise));
-  graph.add(boost::make_shared<UnaryFactor>(3, 4.0, 0.0, unaryNoise));
+  //noiseModel::Diagonal::shared_ptr unaryNoise = noiseModel::Diagonal::Sigmas((Vector(2) << 0.1, 0.1)); // 10cm std on x,y
+  //graph.add(boost::make_shared<UnaryFactor>(1, 0.0, 0.0, unaryNoise));
+  //graph.add(boost::make_shared<UnaryFactor>(2, 2.0, 0.0, unaryNoise));
+  //graph.add(boost::make_shared<UnaryFactor>(3, 4.0, 0.0, unaryNoise));
   graph.print("\nFactor Graph:\n"); // print
 
   // 3. Create the data structure to hold the initialEstimate estimate to the solution
   // For illustrative purposes, these have been deliberately set to incorrect values
   Values initialEstimate;
-  initialEstimate.insert(1, Pose2(0.5, 0.0, 0.2));
-  initialEstimate.insert(2, Pose2(2.3, 0.1, -0.2));
-  initialEstimate.insert(3, Pose2(4.1, 0.1, 0.1));
+  
+  Point3 P1(0.0,0.0,0.0);
+  Point3 P2(1.0,0.0,0.0);
+  Point3 P3(3.0,0.0,0.0);
+
+
+  initialEstimate.insert(1, Moses3(ScSO3(R1.matrix()),P1.vector()));
+  initialEstimate.insert(2, Moses3(ScSO3(R1.matrix()),P2.vector()));
+  initialEstimate.insert(3, Moses3(ScSO3(R1.matrix()),P3.vector()));
+  
+
+
+
+
+
+
+  //initialEstimate.insert(1, Pose2(0.5, 0.0, 0.2));
+  //initialEstimate.insert(2, Pose2(2.3, 0.1, -0.2));
+  //initialEstimate.insert(3, Pose2(4.1, 0.1, 0.1));
   initialEstimate.print("\nInitial Estimate:\n"); // print
 
   // 4. Optimize using Levenberg-Marquardt optimization. The optimizer

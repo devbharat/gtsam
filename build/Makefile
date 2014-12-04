@@ -992,6 +992,32 @@ testEssentialMatrix.run/fast:
 .PHONY : testEssentialMatrix.run/fast
 
 #=============================================================================
+# Target rules for targets named testMoses3
+
+# Build rule for target.
+testMoses3: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testMoses3
+.PHONY : testMoses3
+
+# fast build rule for target.
+testMoses3/fast:
+	$(MAKE) -f gtsam/geometry/tests/CMakeFiles/testMoses3.dir/build.make gtsam/geometry/tests/CMakeFiles/testMoses3.dir/build
+.PHONY : testMoses3/fast
+
+#=============================================================================
+# Target rules for targets named testMoses3.run
+
+# Build rule for target.
+testMoses3.run: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 testMoses3.run
+.PHONY : testMoses3.run
+
+# fast build rule for target.
+testMoses3.run/fast:
+	$(MAKE) -f gtsam/geometry/tests/CMakeFiles/testMoses3.run.dir/build.make gtsam/geometry/tests/CMakeFiles/testMoses3.run.dir/build
+.PHONY : testMoses3.run/fast
+
+#=============================================================================
 # Target rules for targets named testPinholeCamera
 
 # Build rule for target.
@@ -5099,6 +5125,8 @@ help:
 	@echo "... testCalibratedCamera.run"
 	@echo "... testEssentialMatrix"
 	@echo "... testEssentialMatrix.run"
+	@echo "... testMoses3"
+	@echo "... testMoses3.run"
 	@echo "... testPinholeCamera"
 	@echo "... testPinholeCamera.run"
 	@echo "... testPoint2"
