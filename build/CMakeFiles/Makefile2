@@ -59,8 +59,8 @@ CMAKE_BINARY_DIR = /home/bharat/gtsam/gtsam-3.2.0/build
 # Target rules for target CMakeFiles/check.dir
 
 # All Build rule for target.
-CMakeFiles/check.dir/all: wrap/tests/CMakeFiles/testSpirit.dir/all
 CMakeFiles/check.dir/all: wrap/tests/CMakeFiles/testWrap.dir/all
+CMakeFiles/check.dir/all: wrap/tests/CMakeFiles/testSpirit.dir/all
 CMakeFiles/check.dir/all: gtsam/base/tests/CMakeFiles/testDebug.dir/all
 CMakeFiles/check.dir/all: gtsam/base/tests/CMakeFiles/testSymmetricBlockMatrix.dir/all
 CMakeFiles/check.dir/all: gtsam/base/tests/CMakeFiles/testLieVector.dir/all
@@ -98,8 +98,8 @@ CMakeFiles/check.dir/all: gtsam/geometry/tests/CMakeFiles/testSerializationGeome
 CMakeFiles/check.dir/all: gtsam/geometry/tests/CMakeFiles/testMoses3.dir/all
 CMakeFiles/check.dir/all: gtsam/geometry/tests/CMakeFiles/testPoint2.dir/all
 CMakeFiles/check.dir/all: gtsam/geometry/tests/CMakeFiles/testRot3Q.dir/all
-CMakeFiles/check.dir/all: gtsam/inference/tests/CMakeFiles/testKey.dir/all
 CMakeFiles/check.dir/all: gtsam/inference/tests/CMakeFiles/testLabeledSymbol.dir/all
+CMakeFiles/check.dir/all: gtsam/inference/tests/CMakeFiles/testKey.dir/all
 CMakeFiles/check.dir/all: gtsam/inference/tests/CMakeFiles/testOrdering.dir/all
 CMakeFiles/check.dir/all: gtsam/inference/tests/CMakeFiles/testVariableSlots.dir/all
 CMakeFiles/check.dir/all: gtsam/symbolic/tests/CMakeFiles/testSymbolicISAM.dir/all
@@ -161,8 +161,8 @@ CMakeFiles/check.dir/all: gtsam/navigation/tests/CMakeFiles/testAttitudeFactor.d
 CMakeFiles/check.dir/all: gtsam/navigation/tests/CMakeFiles/testCombinedImuFactor.dir/all
 CMakeFiles/check.dir/all: gtsam/navigation/tests/CMakeFiles/testImuFactor.dir/all
 CMakeFiles/check.dir/all: gtsam/navigation/tests/CMakeFiles/testImuBias.dir/all
-CMakeFiles/check.dir/all: tests/CMakeFiles/testNonlinearEquality.dir/all
 CMakeFiles/check.dir/all: tests/CMakeFiles/testNonlinearOptimizer.dir/all
+CMakeFiles/check.dir/all: tests/CMakeFiles/testNonlinearEquality.dir/all
 CMakeFiles/check.dir/all: tests/CMakeFiles/testNonlinearISAM.dir/all
 CMakeFiles/check.dir/all: tests/CMakeFiles/testSubgraphPreconditioner.dir/all
 CMakeFiles/check.dir/all: tests/CMakeFiles/testIterative.dir/all
@@ -481,8 +481,8 @@ wrap/tests/preinstall:
 # Target rules for target wrap/tests/CMakeFiles/check.wrap.dir
 
 # All Build rule for target.
-wrap/tests/CMakeFiles/check.wrap.dir/all: wrap/tests/CMakeFiles/testSpirit.dir/all
 wrap/tests/CMakeFiles/check.wrap.dir/all: wrap/tests/CMakeFiles/testWrap.dir/all
+wrap/tests/CMakeFiles/check.wrap.dir/all: wrap/tests/CMakeFiles/testSpirit.dir/all
 	$(MAKE) -f wrap/tests/CMakeFiles/check.wrap.dir/build.make wrap/tests/CMakeFiles/check.wrap.dir/depend
 	$(MAKE) -f wrap/tests/CMakeFiles/check.wrap.dir/build.make wrap/tests/CMakeFiles/check.wrap.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/bharat/gtsam/gtsam-3.2.0/build/CMakeFiles 
@@ -513,8 +513,8 @@ clean: wrap/tests/CMakeFiles/check.wrap.dir/clean
 # Target rules for target wrap/tests/CMakeFiles/testSpirit.dir
 
 # All Build rule for target.
-wrap/tests/CMakeFiles/testSpirit.dir/all: CppUnitLite/CMakeFiles/CppUnitLite.dir/all
 wrap/tests/CMakeFiles/testSpirit.dir/all: wrap/CMakeFiles/wrap_lib.dir/all
+wrap/tests/CMakeFiles/testSpirit.dir/all: CppUnitLite/CMakeFiles/CppUnitLite.dir/all
 	$(MAKE) -f wrap/tests/CMakeFiles/testSpirit.dir/build.make wrap/tests/CMakeFiles/testSpirit.dir/depend
 	$(MAKE) -f wrap/tests/CMakeFiles/testSpirit.dir/build.make wrap/tests/CMakeFiles/testSpirit.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/bharat/gtsam/gtsam-3.2.0/build/CMakeFiles 
@@ -576,8 +576,8 @@ clean: wrap/tests/CMakeFiles/testSpirit.run.dir/clean
 # Target rules for target wrap/tests/CMakeFiles/testWrap.dir
 
 # All Build rule for target.
-wrap/tests/CMakeFiles/testWrap.dir/all: CppUnitLite/CMakeFiles/CppUnitLite.dir/all
 wrap/tests/CMakeFiles/testWrap.dir/all: wrap/CMakeFiles/wrap_lib.dir/all
+wrap/tests/CMakeFiles/testWrap.dir/all: CppUnitLite/CMakeFiles/CppUnitLite.dir/all
 	$(MAKE) -f wrap/tests/CMakeFiles/testWrap.dir/build.make wrap/tests/CMakeFiles/testWrap.dir/depend
 	$(MAKE) -f wrap/tests/CMakeFiles/testWrap.dir/build.make wrap/tests/CMakeFiles/testWrap.dir/build
 	$(CMAKE_COMMAND) -E cmake_progress_report /home/bharat/gtsam/gtsam-3.2.0/build/CMakeFiles 
@@ -3605,8 +3605,8 @@ gtsam/inference/tests/preinstall:
 # Target rules for target gtsam/inference/tests/CMakeFiles/check.inference.dir
 
 # All Build rule for target.
-gtsam/inference/tests/CMakeFiles/check.inference.dir/all: gtsam/inference/tests/CMakeFiles/testKey.dir/all
 gtsam/inference/tests/CMakeFiles/check.inference.dir/all: gtsam/inference/tests/CMakeFiles/testLabeledSymbol.dir/all
+gtsam/inference/tests/CMakeFiles/check.inference.dir/all: gtsam/inference/tests/CMakeFiles/testKey.dir/all
 gtsam/inference/tests/CMakeFiles/check.inference.dir/all: gtsam/inference/tests/CMakeFiles/testOrdering.dir/all
 gtsam/inference/tests/CMakeFiles/check.inference.dir/all: gtsam/inference/tests/CMakeFiles/testVariableSlots.dir/all
 	$(MAKE) -f gtsam/inference/tests/CMakeFiles/check.inference.dir/build.make gtsam/inference/tests/CMakeFiles/check.inference.dir/depend
@@ -8210,8 +8210,8 @@ tests/preinstall:
 # Target rules for target tests/CMakeFiles/check.tests.dir
 
 # All Build rule for target.
-tests/CMakeFiles/check.tests.dir/all: tests/CMakeFiles/testNonlinearEquality.dir/all
 tests/CMakeFiles/check.tests.dir/all: tests/CMakeFiles/testNonlinearOptimizer.dir/all
+tests/CMakeFiles/check.tests.dir/all: tests/CMakeFiles/testNonlinearEquality.dir/all
 tests/CMakeFiles/check.tests.dir/all: tests/CMakeFiles/testNonlinearISAM.dir/all
 tests/CMakeFiles/check.tests.dir/all: tests/CMakeFiles/testSubgraphPreconditioner.dir/all
 tests/CMakeFiles/check.tests.dir/all: tests/CMakeFiles/testIterative.dir/all

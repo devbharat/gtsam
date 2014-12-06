@@ -31,6 +31,7 @@ set (3rdparty_srcs
  ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/Sophus/sophus/se3.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/Sophus/sophus/scso3.cpp
  ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/Sophus/sophus/sim3.cpp)# Set by 3rdparty/CMakeLists.txt
+
 gtsam_assign_source_folders("${3rdparty_srcs}") # Create MSVC structure
 
 # To exclude a source from the library build (in any subfolder)

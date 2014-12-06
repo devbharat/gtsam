@@ -1014,12 +1014,6 @@ details.h
 
 ../gtsam/3rdparty/Eigen/Eigen/src/plugins/MatrixCwiseUnaryOps.h
 
-/home/bharat/gtsam/gtsam-3.2.0/gtsam/3rdparty/Sophus/sophus/scso3.cpp
-iostream
--
-scso3.h
-/home/bharat/gtsam/gtsam-3.2.0/gtsam/3rdparty/Sophus/sophus/scso3.h
-
 /home/bharat/gtsam/gtsam-3.2.0/gtsam/3rdparty/Sophus/sophus/scso3.h
 gtsam/3rdparty/Eigen/Eigen/Core
 -

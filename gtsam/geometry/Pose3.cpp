@@ -246,7 +246,7 @@ Point3 Pose3::transform_from(const Point3& p, boost::optional<Matrix&> Dpose,
     const Matrix R = R_.matrix();
     Matrix DR = R * skewSymmetric(-p.x(), -p.y(), -p.z());
     Dpose->resize(3, 6);
-    (*Dpose) << DR, R;
+    (*Dpose) << DR, R; // derivative wrt rotation, then wrt point
   }
   if (Dpoint)
     *Dpoint = R_.matrix();
@@ -261,7 +261,7 @@ Point3 Pose3::transform_to(const Point3& p, boost::optional<Matrix&> Dpose,
     const Point3& q = result;
     Matrix DR = skewSymmetric(q.x(), q.y(), q.z());
     Dpose->resize(3, 6);
-    (*Dpose) << DR, _I3;
+    (*Dpose) << DR, _I3;  //
   }
   if (Dpoint)
     *Dpoint = R_.transpose();
