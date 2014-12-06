@@ -337,6 +337,238 @@ TEST( Moses3, Dtransform_from1_c)
   EXPECT(assert_equal(numerical,actualDtransform_from1,1e-8));
 }
 
+TEST( Moses3, Dtransform_from1_d)
+{
+  Rot3 I;
+  Point3 t0(100,0,0);
+  Moses3 T0(I,t0);
+  gtsam::Matrix actualDtransform_from1;
+  T0.transform_from(P, actualDtransform_from1, boost::none);
+  //print(computed, "Dtransform_from1_d computed:");
+  gtsam::Matrix numerical = numericalDerivative21(transform_from_,T0,P);
+  //print(numerical, "Dtransform_from1_d numerical:");
+  EXPECT(assert_equal(numerical,actualDtransform_from1,1e-8));
+}
+
+/* ************************************************************************* */
+TEST( Moses3, Dtransform_from2)
+{
+  gtsam::Matrix actualDtransform_from2;
+  T.transform_from(P, boost::none, actualDtransform_from2);
+  gtsam::Matrix numerical = numericalDerivative22(transform_from_,T,P);
+  EXPECT(assert_equal(numerical,actualDtransform_from2,1e-8));
+}
+
+/* ************************************************************************* */
+Point3 transform_to_(const Moses3& pose, const Point3& point) { return pose.transform_to(point); }
+TEST( Moses3, Dtransform_to1)
+{
+  gtsam::Matrix computed;
+  T.transform_to(P, computed, boost::none);
+  gtsam::Matrix numerical = numericalDerivative21(transform_to_,T,P);
+  EXPECT(assert_equal(numerical,computed,1e-8));
+}
+
+/* ************************************************************************* */
+TEST( Moses3, Dtransform_to2)
+{
+  gtsam::Matrix computed;
+  T.transform_to(P, boost::none, computed);
+  gtsam::Matrix numerical = numericalDerivative22(transform_to_,T,P);
+  EXPECT(assert_equal(numerical,computed,1e-8));
+}
+
+/* ************************************************************************* */
+TEST( Moses3, transform_to_with_derivatives)
+{
+  gtsam::Matrix actH1, actH2;
+  T.transform_to(P,actH1,actH2);
+  gtsam::Matrix expH1 = numericalDerivative21(transform_to_, T,P),
+       expH2 = numericalDerivative22(transform_to_, T,P);
+  EXPECT(assert_equal(expH1, actH1, 1e-8));
+  EXPECT(assert_equal(expH2, actH2, 1e-8));
+}
+
+/* ************************************************************************* */
+TEST( Moses3, transform_from_with_derivatives)
+{
+  gtsam::Matrix actH1, actH2;
+  T.transform_from(P,actH1,actH2);
+  gtsam::Matrix expH1 = numericalDerivative21(transform_from_, T,P),
+       expH2 = numericalDerivative22(transform_from_, T,P);
+  EXPECT(assert_equal(expH1, actH1, 1e-8));
+  EXPECT(assert_equal(expH2, actH2, 1e-8));
+}
+
+/* ************************************************************************* */
+//Will not test with scale as answer is hard coded. Manually scale checked.
+TEST( Moses3, transform_to_translate)
+{
+    Point3 actual = Moses3(ScSO3(1*Rot3().matrix()), Point3(1, 2, 3).vector()).transform_to(Point3(10.,20.,30.));
+    Point3 expected(9.,18.,27.);
+    EXPECT(assert_equal(expected, actual));
+}
+
+/* ************************************************************************* */
+//Will not test with scale as answer is hard coded. Manually scale checked.
+TEST( Moses3, transform_to_rotate)
+{
+    Moses3 transform(ScSO3(1*Rot3::rodriguez(0,0,-1.570796).matrix()), Point3());
+    Point3 actual = transform.transform_to(Point3(2,1,10));
+    Point3 expected(-1,2,10);
+    EXPECT(assert_equal(expected, actual, 0.001));
+}
+
+/* ************************************************************************* */
+//Will not test with scale as answer is hard coded. Manually scale check.
+TEST( Moses3, transform_to)
+{
+    Moses3 transform(Rot3::rodriguez(0,0,-1.570796), Point3(2,4, 0));
+    Point3 actual = transform.transform_to(Point3(3,2,10));
+    Point3 expected(2,1,10);
+    EXPECT(assert_equal(expected, actual, 0.001));
+}
+
+/* ************************************************************************* */
+//Will not test with scale as answer is hard coded. Manually scale check.
+TEST( Moses3, transform_from)
+{
+    Point3 actual = T3.transform_from(Point3());
+    Point3 expected = Point3(1.,2.,3.);
+    EXPECT(assert_equal(expected, actual));
+}
+
+/* ************************************************************************* */
+//Scale checked
+TEST( Moses3, transform_roundtrip)
+{
+    Point3 actual = T4.transform_from(T4.transform_to(Point3(12., -0.11,7.0)));
+    Point3 expected(12., -0.11,7.0);
+    EXPECT(assert_equal(expected, actual));
+}
+
+/* ************************************************************************* */
+//Scale checked
+TEST( Moses3, transformPose_to_origin)
+{
+    // transform to origin
+    Moses3 actual = T4.transform_to(Moses3());
+    EXPECT(assert_equal(T4, actual, 1e-8));
+}
+
+/* ************************************************************************* */
+// Scale checked
+TEST( Moses3, transformPose_to_itself)
+{
+    // transform to itself
+    Moses3 actual = T4.transform_to(T4);
+    EXPECT(assert_equal(Moses3(), actual, 1e-8));
+}
+
+/* ************************************************************************* */
+//Will not test with scale as answer is hard coded. Manually scale check.
+TEST( Moses3, transformPose_to_translation)
+{
+    // transform translation only
+    Rot3 r = Rot3::rodriguez(-1.570796,0,0);
+    Moses3 pose2(r, Point3(21.,32.,13.));
+    Moses3 actual = pose2.transform_to(Moses3(Rot3(), Point3(1,2,3)));
+    Moses3 expected(r, Point3(20.,30.,10.));
+    EXPECT(assert_equal(expected, actual, 1e-8));
+}
+
+/* ************************************************************************* */
+//Will not test with scale as answer is hard coded. Manually scale check.
+TEST( Moses3, transformPose_to_simple_rotate)
+{
+    // transform translation only
+    Rot3 r = Rot3::rodriguez(0,0,-1.570796);
+    Moses3 pose2(r, Point3(21.,32.,13.));
+    Moses3 transform(r, Point3(1,2,3));
+    Moses3 actual = pose2.transform_to(transform);
+    Moses3 expected(Rot3(), Point3(-30.,20.,10.));
+    EXPECT(assert_equal(expected, actual, 0.001));
+}
+
+/* ************************************************************************* */
+//Will not test with scale as answer is hard coded. Manually scale check.
+TEST( Moses3, transformPose_to)
+{
+    // transform to
+    Rot3 r = Rot3::rodriguez(0,0,-1.570796); //-90 degree yaw
+    Rot3 r2 = Rot3::rodriguez(0,0,0.698131701); //40 degree yaw
+    Moses3 pose2(r2, Point3(21.,32.,13.));
+    Moses3 transform(r, Point3(1,2,3));
+    Moses3 actual = pose2.transform_to(transform);
+    Moses3 expected(Rot3::rodriguez(0,0,2.26892803), Point3(-30.,20.,10.));
+    EXPECT(assert_equal(expected, actual, 0.001));
+}
+
+/* ************************************************************************* */
+//scale tested
+TEST(Moses3, localCoordinates_first_order)
+{
+  Vector d12 = repeat(7,0.1);
+  Moses3 t1 = T, t2 = t1.retract(d12);
+  EXPECT(assert_equal(d12, t1.localCoordinates(t2)));
+}
+
+/* ************************************************************************* */
+//Scale tested
+TEST(Moses3, manifold_expmap)
+{
+  Moses3 t1 = T4;
+  Moses3 t2 = T3;
+  Moses3 origin;
+  Vector d12 = t1.localCoordinates(t2);
+  EXPECT(assert_equal(t2, t1.retract(d12)));
+  Vector d21 = t2.localCoordinates(t1);
+  EXPECT(assert_equal(t1, t2.retract(d21)));
+
+  // Check that log(t1,t2)=-log(t2,t1)
+  EXPECT(assert_equal(d12,-d21));
+}
+
+/* ************************************************************************* */
+TEST(Moses3, subgroups)
+{
+  // Frank - Below only works for correct "Agrawal06iros style expmap
+  // lines in canonical coordinates correspond to Abelian subgroups in SE(3)
+   Vector d = (Vector(7) << 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7);
+  // exp(-d)=inverse(exp(d))
+   EXPECT(assert_equal(Moses3::Expmap(-d),Moses3::Expmap(d).inverse()));
+  // exp(5d)=exp(2*d+3*d)=exp(2*d)exp(3*d)=exp(3*d)exp(2*d)
+   Moses3 T2 = Moses3::Expmap(2*d);
+   Moses3 T3 = Moses3::Expmap(3*d);
+   Moses3 T5 = Moses3::Expmap(5*d);
+   EXPECT(assert_equal(T5,T2*T3));
+   EXPECT(assert_equal(T5,T3*T2));
+}
+
+/* ************************************************************************* */
+// Scale tested
+TEST( Moses3, between )
+{
+  Moses3 expected = T2.inverse() * T4;
+  gtsam::Matrix actualDBetween1,actualDBetween2;
+  Moses3 actual = T2.between(T4, actualDBetween1,actualDBetween2);
+  EXPECT(assert_equal(expected,actual));
+
+  gtsam::Matrix numericalH1 = numericalDerivative21(testing::between<Moses3> , T2, T4);
+  EXPECT(assert_equal(numericalH1,actualDBetween1,5e-3));
+
+  gtsam::Matrix numericalH2 = numericalDerivative22(testing::between<Moses3> , T2, T4);
+  EXPECT(assert_equal(numericalH2,actualDBetween2,1e-5));
+}
+
+
+
+
+
+
+
+
+
 
 
 

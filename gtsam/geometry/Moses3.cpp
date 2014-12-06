@@ -265,7 +265,7 @@ Point3 Moses3::transform_to(const Point3& p, boost::optional<Matrix&> Dpose,
     const Point3& q = result;
     Matrix DR = skewSymmetric(q.x(), q.y(), q.z());
     Dpose->resize(3, 7); 
-    Vector3 scaleCol=zeros(3,1);//TODO This needs checking. Mostly incorrect.
+    Vector3 scaleCol=(-1)*q.vector();//TODO This needs checking. Mostly incorrect.
     (*Dpose) << _I3, DR, scaleCol; //TODO This needs checking. Mostly incorrect.
   }
   if (Dpoint)
