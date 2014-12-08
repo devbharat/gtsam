@@ -166,7 +166,7 @@ TEST(Moses3, expmap_c_full)
 
 /* ************************************************************************* */
 // assert that T*exp(xi)*T^-1 is equal to exp(Ad_T(xi))
-TEST(Pose3, Adjoint_full)
+TEST(Moses3, Adjoint_full)
 {
   Moses3 expected = T * Moses3::Expmap(screw::xi) * T.inverse();
   Vector xiprime = T.Adjoint(screw::xi);
@@ -184,7 +184,7 @@ TEST(Pose3, Adjoint_full)
 
 /* ************************************************************************* */
 // Tested with scale
-TEST(Pose3, expmaps_galore_full)
+TEST(Moses3, expmaps_galore_full)
 {
   Vector xi; Moses3 actual;
   xi = (Vector(7) << 0.4, 0.5, 0.6 ,0.1, 0.2, 0.3, 0.1);
