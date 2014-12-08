@@ -74,49 +74,69 @@ Matrix7 Moses3::AdjointMap7() const {
 
 
 /* ************************************************************************* */
-Matrix6 Moses3::adjointMap(const Vector& xi) {
+//Remove
+Matrix7 Moses3::adjointMap(const Vector& xi) {
+  /*
   Matrix3 w_hat = skewSymmetric(xi(0), xi(1), xi(2));
   Matrix3 v_hat = skewSymmetric(xi(3), xi(4), xi(5));
   Matrix6 adj;
-  adj << w_hat, Z3, v_hat, w_hat;
+  adj << w_hat, Z3, v_hat, w_hat;*/
 
-  return adj;
+  return adjointMap7(xi);
 }
+
+
+/* ************************************************************************* */
+Matrix7 Moses3::adjointMap7(const Vector& xi) {
+  /*
+  Matrix3 w_hat = skewSymmetric(xi(0), xi(1), xi(2));
+  Matrix3 v_hat = skewSymmetric(xi(3), xi(4), xi(5));
+  Matrix6 adj;
+  adj << w_hat, Z3, v_hat, w_hat;*/
+
+  return d_lieBracketab_by_d_a(xi);
+}
+
+
+
+
+
+
 
 /* ************************************************************************* */
 Vector Moses3::adjoint(const Vector& xi, const Vector& y,
     boost::optional<Matrix&> H) {
   if (H) {
-    *H = zeros(6, 6);
-    for (int i = 0; i < 6; ++i) {
-      Vector dxi = zero(6);
+    *H = zeros(7, 7);
+    for (int i = 0; i < 7; ++i) {
+      Vector dxi = zero(7);
       dxi(i) = 1.0;
-      Matrix Gi = adjointMap(dxi);
+      Matrix Gi = adjointMap7(dxi);
       (*H).col(i) = Gi * y;
     }
   }
-  return adjointMap(xi) * y;
+  return adjointMap7(xi) * y; // Should it be = Sim3::lieBracket(xi, y) or Sim3::lieBracket(y, xi). [a,b] = d/dt(adj(a)*b).
 }
+
 
 /* ************************************************************************* */
 Vector Moses3::adjointTranspose(const Vector& xi, const Vector& y,
     boost::optional<Matrix&> H) {
   if (H) {
-    *H = zeros(6, 6);
-    for (int i = 0; i < 6; ++i) {
-      Vector dxi = zero(6);
+    *H = zeros(7, 7);
+    for (int i = 0; i < 7; ++i) {
+      Vector dxi = zero(7);
       dxi(i) = 1.0;
-      Matrix GTi = adjointMap(dxi).transpose();
+      Matrix GTi = adjointMap7(dxi).transpose();
       (*H).col(i) = GTi * y;
     }
   }
-  Matrix adjT = adjointMap(xi).transpose();
-  return adjointMap(xi).transpose() * y;
+  return adjointMap7(xi).transpose() * y;
 }
 
 
 
-/* ************************************************************************* */
+/* ************************************************************************* 
 Matrix6 Moses3::dExpInv_exp(const Vector& xi) {
   // Bernoulli numbers, from Wikipedia
   static const Vector B = (Vector(9) << 1.0, -1.0 / 2.0, 1. / 6., 0.0, -1.0 / 30.0,
@@ -132,7 +152,7 @@ Matrix6 Moses3::dExpInv_exp(const Vector& xi) {
     res = res + B(i) / fac * ad_i;
   }
   return res;
-}
+}*/
 
 /* ************************************************************************* */
 void Moses3::print(const string& s) const {
@@ -324,13 +344,14 @@ double Moses3::range(const Point3& point, boost::optional<Matrix&> H1,
 }
 
 /* ************************************************************************* */
+// This needs proper testing
 double Moses3::range(const Moses3& point, boost::optional<Matrix&> H1,
     boost::optional<Matrix&> H2) const {
-  double r = range(Point3(point.Sim3::translation()), H1, H2);
+  double r = range(Point3(point.Sim3::translation()), H1, H2); //IMPORTANT!!! Should it be just translation or scaled translation ?? Scaled translation spoils derivatives.
   if (H2) {
-    Matrix H2_ = *H2 * point.rotation().matrix();
-    *H2 = zeros(1, 6);
-    insertSub(*H2, H2_, 0, 3);
+    Matrix H2_ = *H2 * point.scso3().matrix(); //Checked via numerical derivatives
+    *H2 = zeros(1, 7);
+    insertSub(*H2, H2_, 0, 0);
   }
   return r;
 }

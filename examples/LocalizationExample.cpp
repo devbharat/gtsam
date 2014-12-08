@@ -170,7 +170,7 @@ int main(int argc, char** argv) {
   
   Point3 P1(0.0,0.0,0.0);
   Point3 P2(1.0,0.0,0.0);
-  Point3 P3(3.0,0.0,0.0);
+  Point3 P3(5.0,0.0,0.0);
 
 
   initialEstimate.insert(1, Moses3(ScSO3(R1.matrix()),P1.vector()));

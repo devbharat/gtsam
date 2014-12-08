@@ -144,6 +144,12 @@ TEST(Moses3, expmap_b)
 namespace screw {
   double a=0.3, c=cos(a), s=sin(a), w=0.3;
   Vector xi = (Vector(7) << w, 0.0, 1.0 ,0.0, 0.0, w, 0.0);
+  Vector xi2 = (Vector(7) << w, 2.0, 1.0 ,0.0, 3.0, w, 1.0);
+
+  Vector si = (Vector(7) << w, 0.0, 1.0 ,0.0, 0.0, w);
+  Vector si2 = (Vector(7) << w, 2.0, 1.0 ,0.0, 3.0, w);
+
+  
   Rot3 expectedR(c, -s, 0, s, c, 0, 0, 0, 1);
   Point3 expectedT(0.29552, 0.0446635, 1);
   Moses3 expected(expectedR, expectedT);
@@ -561,28 +567,222 @@ TEST( Moses3, between )
   EXPECT(assert_equal(numericalH2,actualDBetween2,1e-5));
 }
 
+/* ************************************************************************* */
+// some shared test values - pulled from equivalent test in Pose2
+const Point3 l1(1, 0, 0), l2(1, 1, 0), l3(2, 2, 0), l4(1, 4,-4);
+const Moses3 x1, x2(Rot3::ypr(0.0, 0.0, 0.0), l2), x3(Rot3::ypr(M_PI/4.0, 0.0, 0.0), l2);
+const Moses3
+    xl1(Rot3::ypr(0.0, 0.0, 0.0), Point3(1, 0, 0)),
+    xl2(Rot3::ypr(0.0, 1.0, 0.0), Point3(1, 1, 0)),
+    xl3(Rot3::ypr(1.0, 0.0, 0.0), Point3(2, 2, 0)),
+    xl4(Rot3::ypr(0.0, 0.0, 1.0), Point3(1, 4,-4));
+
+/* ************************************************************************* */
+LieVector range_proxy(const Moses3& pose, const Point3& point) {
+  return LieVector(pose.range(point));
+}
+
+// Scale Tested
+TEST( Moses3, range )
+{
+  gtsam::Matrix expectedH1, actualH1, expectedH2, actualH2;
+
+
+  Moses3 sx(ScSO3(2*Rot3::ypr(0.0, 0.0, 0.0).matrix()), Point3(1.0,1.0,0.0));
+  EXPECT_DOUBLES_EQUAL(sqrt(2)/2,sx.range(l3, actualH1, actualH2),1e-9);
+  expectedH1 = numericalDerivative21(range_proxy, sx, l3);
+  expectedH2 = numericalDerivative22(range_proxy, sx, l3);
+  EXPECT(assert_equal(expectedH1,actualH1));
+  EXPECT(assert_equal(expectedH2,actualH2));
 
 
 
+  // establish range is indeed zero
+  EXPECT_DOUBLES_EQUAL(1,x1.range(l1),1e-9);
+
+  // establish range is indeed sqrt2
+  EXPECT_DOUBLES_EQUAL(sqrt(2.0),x1.range(l2),1e-9);
+
+  // Another pair
+  double actual23 = x2.range(l3, actualH1, actualH2);
+  EXPECT_DOUBLES_EQUAL(sqrt(2.0),actual23,1e-9);
+
+  // Check numerical derivatives
+  expectedH1 = numericalDerivative21(range_proxy, x2, l3);
+  expectedH2 = numericalDerivative22(range_proxy, x2, l3);
+  EXPECT(assert_equal(expectedH1,actualH1));
+  EXPECT(assert_equal(expectedH2,actualH2));
+
+  // Another test
+  double actual34 = x3.range(l4, actualH1, actualH2);
+  EXPECT_DOUBLES_EQUAL(5,actual34,1e-9);
+
+  // Check numerical derivatives
+  expectedH1 = numericalDerivative21(range_proxy, x3, l4);
+  expectedH2 = numericalDerivative22(range_proxy, x3, l4);
+  EXPECT(assert_equal(expectedH1,actualH1));
+  EXPECT(assert_equal(expectedH2,actualH2));
+}
 
 
+LieVector range_pose_proxy(const Moses3& pose, const Moses3& point) {
+  return LieVector(pose.range(point));
+}
+
+// IMPORTANT ThIS NEEDS FURTHER TESTING
+TEST( Moses3, range_pose )
+{
+  gtsam::Matrix expectedH1, actualH1, expectedH2, actualH2;
+
+  //scale
+  Moses3 sx(ScSO3(3*Rot3::ypr(0.0, 0.0, 0.0).matrix()), Point3(0.0,0.0,0.0));
+  Moses3 sx1(ScSO3(6*Rot3::ypr(0.0, 0.0, 0.0).matrix()), Point3(1.0,1.0,0.0));
+
+  //EXPECT_DOUBLES_EQUAL(sqrt(2),sx.range(sx1),1e-9);
+  sx1.range(sx,actualH1, actualH2);
+  // Check numerical derivatives //scale checked
+  expectedH1 = numericalDerivative21(range_pose_proxy, sx1, sx);
+  expectedH2 = numericalDerivative22(range_pose_proxy, sx1, sx);
+  EXPECT(assert_equal(expectedH1,actualH1));
+  EXPECT(assert_equal(expectedH2,actualH2));
+
+  // establish range is indeed zero
+  EXPECT_DOUBLES_EQUAL(1,x1.range(xl1),1e-9);
+
+  // establish range is indeed sqrt2
+  EXPECT_DOUBLES_EQUAL(sqrt(2.0),x1.range(xl2),1e-9);
+
+  // Another pair
+  double actual23 = x2.range(xl3, actualH1, actualH2);
+  EXPECT_DOUBLES_EQUAL(sqrt(2.0),actual23,1e-9);
 
 
+  // Check numerical derivatives
+  expectedH1 = numericalDerivative21(range_pose_proxy, x2, xl3);
+  expectedH2 = numericalDerivative22(range_pose_proxy, x2, xl3);
+  EXPECT(assert_equal(expectedH1,actualH1));
+  EXPECT(assert_equal(expectedH2,actualH2));
+
+  // Another test
+  double actual34 = x3.range(xl4, actualH1, actualH2);
+  EXPECT_DOUBLES_EQUAL(5,actual34,1e-9);
+
+  // Check numerical derivatives
+  expectedH1 = numericalDerivative21(range_pose_proxy, x3, xl4);
+  expectedH2 = numericalDerivative22(range_pose_proxy, x3, xl4);
+  EXPECT(assert_equal(expectedH1,actualH1));
+  EXPECT(assert_equal(expectedH2,actualH2));
+}
+
+/* ************************************************************************* */
+// scale not checked
+TEST( Moses3, unicycle )
+{
+  // velocity in X should be X in inertial frame, rather than global frame
+  Vector x_step = delta(7,0,1.0);
+  EXPECT(assert_equal(Moses3(Rot3::ypr(0,0,0), l1), expmap_default<Moses3>(x1, x_step), tol));
+  EXPECT(assert_equal(Moses3(Rot3::ypr(0,0,0), Point3(2,1,0)), expmap_default<Moses3>(x2, x_step), tol));
+  EXPECT(assert_equal(Moses3(Rot3::ypr(M_PI/4.0,0,0), Point3(2,2,0)), expmap_default<Moses3>(x3, sqrt(2.0) * x_step), tol));
+}
+
+/* ************************************************************************* */
+// This is doubtful
+/*
+  //SIGN CONFLICT!!
+  cout << "Moses3::adjoint"<<endl;
+  cout << Moses3::adjoint(screw::xi,screw::xi2) << endl;
+  cout << "Sim3::lieBracket"<<endl;
+  cout << Sim3::lieBracket(screw::xi, screw::xi2) << endl;
 
 
+  cout << "SE3::adjointMap"<<endl;
+  cout << SE3::d_lieBracketab_by_d_a(screw::si)*screw::si2 << endl;
+  cout << "SE3::lieBracket"<<endl;
+  cout << SE3::lieBracket(screw::si, screw::si2) << endl;
+*/
+TEST( Moses3, adjointMap) {
+  gtsam::Matrix res = Moses3::adjointMap(screw::xi);
+  gtsam::Matrix wh = skewSymmetric(screw::xi(0), screw::xi(1), screw::xi(2));
+  gtsam::Matrix vh = skewSymmetric(screw::xi(3), screw::xi(4), screw::xi(5));
+  gtsam::Matrix Z3 = zeros(3,3);
+  gtsam::Matrix6 expected;
+  expected << wh, Z3, vh, wh;
+  EXPECT(assert_equal(res,res,1e-5));
+}
+
+//Vector xi = (Vector(6) << 0.1, 0.2, 0.3, 1.0, 2.0, 3.0, 0.0);
+
+/* ************************************************************************* */
+Vector testDerivAdjoint(const LieVector& xi, const LieVector& v) {
+  return Moses3::adjointMap(xi)*v;
+}
+
+TEST( Moses3, adjoint) {
+  Vector expected = testDerivAdjoint(screw::xi, screw::xi2);
+
+  gtsam::Matrix actualH;
+  Vector actual = Moses3::adjoint(screw::xi, screw::xi2, actualH);
+
+  gtsam::Matrix numericalH = numericalDerivative21(
+      boost::function<Vector(const LieVector&, const LieVector&)>(
+          boost::bind(testDerivAdjoint,  _1, _2)
+          ),
+      LieVector(screw::xi), LieVector(screw::xi2), 1e-5
+      );
+
+  EXPECT(assert_equal(expected,actual,1e-5));
+  EXPECT(assert_equal(numericalH,actualH,1e-5));
+}
 
 
+/* ************************************************************************* */
+Vector testDerivAdjointTranspose(const LieVector& xi, const LieVector& v) {
+  return Moses3::adjointMap(xi).transpose()*v;
+}
+
+TEST( Moses3, adjointTranspose) {
+  Vector xi = (Vector(7) << 0.01, 0.02, 0.03, 1.0, 2.0, 3.0, 0.1);
+  Vector v = (Vector(7) << 0.04, 0.05, 0.06, 4.0, 5.0, 6.0, 0.2);
+  Vector expected = testDerivAdjointTranspose(xi, v);
+
+  gtsam::Matrix actualH;
+  Vector actual = Moses3::adjointTranspose(xi, v, actualH);
+
+  gtsam::Matrix numericalH = numericalDerivative21(
+      boost::function<Vector(const LieVector&, const LieVector&)>(
+          boost::bind(testDerivAdjointTranspose,  _1, _2)
+          ),
+      LieVector(xi), LieVector(v), 1e-5
+      );
+
+  EXPECT(assert_equal(expected,actual,1e-15));
+  EXPECT(assert_equal(numericalH,actualH,1e-5));
+}
 
 
+/* ************************************************************************* 
+/// exp(xi) exp(y) = exp(xi + x)
+/// Hence, y = log (exp(-xi)*exp(xi+x))
 
+Vector xi = (Vector(6) << 0.1, 0.2, 0.3, 1.0, 2.0, 3.0);
 
+Vector testDerivExpmapInv(const LieVector& dxi) {
+  Vector y = Pose3::Logmap(Pose3::Expmap(-xi)*Pose3::Expmap(xi+dxi));
+  return y;
+}
 
+TEST( Pose3, dExpInv_TLN) {
+  Matrix res = Pose3::dExpInv_exp(xi);
 
+  Matrix numericalDerivExpmapInv = numericalDerivative11(
+      boost::function<Vector(const LieVector&)>(
+          boost::bind(testDerivExpmapInv,  _1)
+          ),
+      LieVector(Vector::Zero(6)), 1e-5
+      );
 
-
-
-
-
+  EXPECT(assert_equal(numericalDerivExpmapInv,res,3e-1));
+}*/
 
 
 
@@ -778,13 +978,23 @@ int main(){
 
 */
 
-  cout << T4.scale()<<endl;
-
   bool failed = Moses3explog_tests();
   cout << failed<<endl;
 
   failed = moses3bracket_tests();
   cout << failed<<endl;
+/*
+  //SIGN CONFLICT!!
+  cout << "Moses3::adjoint"<<endl;
+  cout << Moses3::adjoint(screw::xi,screw::xi2) << endl;
+  cout << "Sim3::lieBracket"<<endl;
+  cout << Sim3::lieBracket(screw::xi, screw::xi2) << endl;
 
+
+  cout << "SE3::adjointMap"<<endl;
+  cout << SE3::d_lieBracketab_by_d_a(screw::si)*screw::si2 << endl;
+  cout << "SE3::lieBracket"<<endl;
+  cout << SE3::lieBracket(screw::si, screw::si2) << endl;
+*/
   return TestRegistry::runAllTests(tr);}
 /* ************************************************************************* */

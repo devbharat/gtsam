@@ -267,27 +267,19 @@ public:
      *
      */
      // TODO WRITE. Remove This is the lie bracket.
-    static Matrix6 adjointMap(const Vector& xi);
-
+    static Matrix7 adjointMap(const Vector& xi); //points to adjointMap7
+	static Matrix7 adjointMap7(const Vector& xi);
     /**
      * Action of the adjointMap on a Lie-algebra vector y, with optional derivatives
      */
-     // TODO Remove
-    static Vector adjoint(const Vector& xi, const Vector& y, boost::optional<Matrix&> H = boost::none);
+     // TODO Test Derivatives
+    static Vector adjoint(const Vector& xi, const Vector& y, boost::optional<Matrix&> H = boost::none); // TODO!! Sign conflict with [xi1,xi2] = - adj(xi1).xi2.
 
     /**
      * The dual version of adjoint action, acting on the dual space of the Lie-algebra vector space.
      */
-     // TODO Remove
+     // TODO Test derivatives
     static Vector adjointTranspose(const Vector& xi, const Vector& y, boost::optional<Matrix&> H = boost::none);
-
-
-
-
-
-
-
-
 
 
     /**
@@ -301,11 +293,20 @@ public:
      *      Structure-Preserving Algorithms for Ordinary Differential Equations, 2nd edition, Springer-Verlag, 2006.
      */
      //TODO Remove and calculate for Sim3
-    static Matrix6 dExpInv_exp(const Vector&  xi);
+    static Matrix7 dExpInv_exp(const Vector&  xi);
+
+
+
+
+
+
+
+
+
 
     /**
      * wedge for Moses3:
-     * @param xi 6-dim twist (omega,v) where
+     * @param xi 7-dim twist (v,omega,s) where
      *  omega = (wx,wy,wz) 3D angular velocity
      *  v (vx,vy,vz) = 3D velocity
      * @return xihat, 4*4 element of Lie algebra that can be exponentiated
@@ -413,14 +414,14 @@ public:
      * exponential map parameterization
      * @return a pair of [start, end] indices into the tangent space vector
      */
-    inline static std::pair<size_t, size_t> translationInterval() { return std::make_pair(3, 5); }
+    inline static std::pair<size_t, size_t> translationInterval() { return std::make_pair(0, 2); }
 
     /**
      * Return the start and end indices (inclusive) of the rotation component of the
      * exponential map parameterization
      * @return a pair of [start, end] indices into the tangent space vector
      */
-    static std::pair<size_t, size_t> rotationInterval() { return std::make_pair(0, 2); }
+    static std::pair<size_t, size_t> rotationInterval() { return std::make_pair(3, 5); }
 
     /// Output stream operator
     GTSAM_EXPORT friend std::ostream &operator<<(std::ostream &os, const Moses3& p);
