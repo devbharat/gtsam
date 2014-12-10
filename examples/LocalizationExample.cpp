@@ -152,28 +152,34 @@ int main(int argc, char** argv) {
 
 
   //Intermediate constraints
-  Rot3 R0 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/2));
-  Point3 Pp0(0.0, 0.0, 0.0);
+  Rot3 R0 = Rot3(Rot3::rodriguez(0.0, 0.0, 0.0)); //Initial prior to origin
+  Point3 Pp0(0.0, 0.0, 0.0);  
   
-  Rot3 R12 = Rot3(Rot3::rodriguez(0.0, 0.0, 0.0));
+
+
+  Rot3 R12 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/2));
   Point3 Pp12(1.0, 0.0, 0.0);
 
   Rot3 R23 = Rot3(Rot3::rodriguez(0.0, 0.0, -PI/2));
-  Point3 Pp23(2.0, 0.0, 0.0);
+  Point3 Pp23(2.0, 0.0, 0.0);   
 
   Rot3 R34 = Rot3(Rot3::rodriguez(0.0, 0.0, 0.0));
   Point3 Pp34(-1.0, -4.0, 0.0);
 
 
   float s0,s12,s23,s34;
-  s0=1.6;
-  s12=1;
+  s0=1; //Initial Prior to origin.
+
+  s12=2.0;
   s23=0.5;
-  s34=1;
+  s34=1.0;
 
 
   //Unary priors
-  Point3 Up(0, 2, 0.0);  
+  Point3 Up1(0, 0, 0.0);  
+  Point3 Up2(1, 0, 0.0);  
+  Point3 Up3(1, 4, 0.0);  
+  Point3 Up4(0, 0, 0.0);  
 
 
 
@@ -184,6 +190,7 @@ int main(int argc, char** argv) {
   Point3 Pi3(1.0, 0.0, 0.0);
   Point3 Pi4(1.0, 2.0, 3.0);
 
+
   Rot3 Ri1 = Rot3::rodriguez(0.0, 0.0, PI/2.5);
   Rot3 Ri2 = Rot3::rodriguez(0.0, 0.0, 0.0);
   Rot3 Ri3 = Rot3::rodriguez(0.0, 0.0, 0.0);
@@ -192,8 +199,8 @@ int main(int argc, char** argv) {
   float si1,si2,si3,si4;
   si1=1;
   si2=1;
-  si3=10;
-  si4=10;
+  si3=1;
+  si4=1;
 
 
 
@@ -201,21 +208,23 @@ int main(int argc, char** argv) {
   // Add a prior on the first pose, setting it to the origin
   // A prior factor consists of a mean and a noise model (covariance matrix)
   Moses3 priorMean(ScSO3(s0*R0.matrix()),Pp0.vector()); // prior at origin
-  noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 1));
+  noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01));
   graph.add(PriorFactor<Moses3>(1, priorMean, priorNoise));
 
 
 
 
   graph.add(BetweenFactor<Moses3>(1, 2, Moses3(ScSO3(s12*R12.matrix()),Pp12.vector()), odometryNoise));
-  //graph.add(BetweenFactor<Moses3>(2, 3, Moses3(ScSO3(s23*R23.matrix()),Pp23.vector()), odometryNoise));
-  //graph.add(BetweenFactor<Moses3>(3, 4, Moses3(ScSO3(s34*R34.matrix()),Pp34.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(2, 3, Moses3(ScSO3(s23*R23.matrix()),Pp23.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(3, 4, Moses3(ScSO3(s34*R34.matrix()),Pp34.vector()), odometryNoise));
   
 
   // 2b. Add "GPS-like" measurements
   // We will use our custom UnaryFactor for this.
   noiseModel::Diagonal::shared_ptr unaryNoise = noiseModel::Diagonal::Sigmas((Vector(3) << 0.01, 0.01, 0.01)); // 10cm std on x,y
-  graph.add(boost::make_shared<UnaryFactor>(2, Up, unaryNoise));
+  graph.add(boost::make_shared<UnaryFactor>(2, Up2, unaryNoise));
+  graph.add(boost::make_shared<UnaryFactor>(3, Up3, unaryNoise));
+  graph.add(boost::make_shared<UnaryFactor>(4, Up4, unaryNoise));
 
 
 
@@ -237,8 +246,8 @@ int main(int argc, char** argv) {
 
   initialEstimate.insert(1, Moses3(ScSO3(si1*Ri1.matrix()),Pi1.vector()));
   initialEstimate.insert(2, Moses3(ScSO3(si2*Ri2.matrix()),Pi2.vector()));
-  //initialEstimate.insert(3, Moses3(ScSO3(si3*Ri3.matrix()),Pi3.vector()));
-  //initialEstimate.insert(4, Moses3(ScSO3(si4*Ri4.matrix()),Pi4.vector()));
+  initialEstimate.insert(3, Moses3(ScSO3(si3*Ri3.matrix()),Pi3.vector()));
+  initialEstimate.insert(4, Moses3(ScSO3(si4*Ri4.matrix()),Pi4.vector()));
   
 
 
