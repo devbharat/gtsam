@@ -115,7 +115,10 @@ public:
 	    H->block < 3, 1 > (0, 4) << zeros(3, 1);				//deriv scale NOT TESTED
 	  }
 
-  	return nT_.localCoordinates(Point3(q.Sim3::translation()));
+	Vector3 res =nT_.localCoordinates(Point3(q.Sim3::translation()));
+	cout << "****** "<<res.transpose() <<"   ";
+	cout << nT_.vector().transpose() << "    "<< q.Sim3::translation().transpose() <<" ]]" << endl;
+  	return res;
 
 
   }
@@ -152,7 +155,7 @@ int main(int argc, char** argv) {
   Rot3 R0 = Rot3(Rot3::rodriguez(0.0, 0.0, 0.0));
   Point3 Pp0(0.0, 0.0, 0.0);
   
-  Rot3 R12 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/2));
+  Rot3 R12 = Rot3(Rot3::rodriguez(0.0, 0.0, 0.0));
   Point3 Pp12(1.0, 0.0, 0.0);
 
   Rot3 R23 = Rot3(Rot3::rodriguez(0.0, 0.0, -PI/2));
@@ -163,18 +166,18 @@ int main(int argc, char** argv) {
 
 
   float s0,s12,s23,s34;
-  s0=1;
-  s12=2;
+  s0=1.1;
+  s12=1;
   s23=0.5;
   s34=1;
 
 
   //Unary priors
-  Point3 Up1(0.0, 0.0, 0.0);  
+  Point3 Up(2, 0.0, 0.0);  
 
   //Initial Estimate values
-  Point3 Pi1(-1.0, 2.0, 1.0);
-  Point3 Pi2(0.0, 1.0, 0.0);
+  Point3 Pi1(0.0, 0.0, 0.0);
+  Point3 Pi2(1.0, 1.0, 1.0);
   Point3 Pi3(1.0, 0.0, 0.0);
   Point3 Pi4(1.0, 2.0, 3.0);
 
@@ -184,8 +187,8 @@ int main(int argc, char** argv) {
   Rot3 Ri4 = Rot3::rodriguez(0.0, PI, 0.0);
 
   float si1,si2,si3,si4;
-  si1=0.5;
-  si2=60;
+  si1=1;
+  si2=1;
   si3=10;
   si4=10;
 
@@ -202,14 +205,14 @@ int main(int argc, char** argv) {
 
 
   graph.add(BetweenFactor<Moses3>(1, 2, Moses3(ScSO3(s12*R12.matrix()),Pp12.vector()), odometryNoise));
-  graph.add(BetweenFactor<Moses3>(2, 3, Moses3(ScSO3(s23*R23.matrix()),Pp23.vector()), odometryNoise));
-  graph.add(BetweenFactor<Moses3>(3, 4, Moses3(ScSO3(s34*R34.matrix()),Pp34.vector()), odometryNoise));
+  //graph.add(BetweenFactor<Moses3>(2, 3, Moses3(ScSO3(s23*R23.matrix()),Pp23.vector()), odometryNoise));
+  //graph.add(BetweenFactor<Moses3>(3, 4, Moses3(ScSO3(s34*R34.matrix()),Pp34.vector()), odometryNoise));
   
 
   // 2b. Add "GPS-like" measurements
   // We will use our custom UnaryFactor for this.
   noiseModel::Diagonal::shared_ptr unaryNoise = noiseModel::Diagonal::Sigmas((Vector(3) << 0.000001, 0.001, 0.001)); // 10cm std on x,y
-  graph.add(boost::make_shared<UnaryFactor>(1, Up1, unaryNoise));
+  graph.add(boost::make_shared<UnaryFactor>(2, Up, unaryNoise));
 
 
 
@@ -231,8 +234,8 @@ int main(int argc, char** argv) {
 
   initialEstimate.insert(1, Moses3(ScSO3(si1*Ri1.matrix()),Pi1.vector()));
   initialEstimate.insert(2, Moses3(ScSO3(si2*Ri2.matrix()),Pi2.vector()));
-  initialEstimate.insert(3, Moses3(ScSO3(si3*Ri3.matrix()),Pi3.vector()));
-  initialEstimate.insert(4, Moses3(ScSO3(si4*Ri4.matrix()),Pi4.vector()));
+  //initialEstimate.insert(3, Moses3(ScSO3(si3*Ri3.matrix()),Pi3.vector()));
+  //initialEstimate.insert(4, Moses3(ScSO3(si4*Ri4.matrix()),Pi4.vector()));
   
 
 
