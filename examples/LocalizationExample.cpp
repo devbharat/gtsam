@@ -72,21 +72,23 @@ using namespace gtsam;
 // the NoiseModelFactor1.
 #include <gtsam/nonlinear/NonlinearFactor.h>
 
+#define PI 3.14159265359f
+
 namespace gtsam{
 
-class UnaryFactor: public NoiseModelFactor1<Pose2> {
+class UnaryFactor: public NoiseModelFactor1<Moses3> {
 
   // The factor will hold a measurement consisting of an (X,Y) location
   // We could this with a Point2 but here we just use two doubles
-  double mx_, my_;
+  Moses3 m_;
 
 public:
   /// shorthand for a smart pointer to a factor
   typedef boost::shared_ptr<UnaryFactor> shared_ptr;
 
   // The constructor requires the variable key, the (X, Y) measurement value, and the noise model
-  UnaryFactor(Key j, double x, double y, const SharedNoiseModel& model):
-    NoiseModelFactor1<Pose2>(model, j), mx_(x), my_(y) {}
+  UnaryFactor(Key j, Moses3 p, const SharedNoiseModel& model):
+    NoiseModelFactor1<Moses3>(model, j), m_(p) {}
 
   virtual ~UnaryFactor() {}
 
@@ -95,7 +97,7 @@ public:
   // function, returning a vector of errors when evaluated at the provided variable value. It
   // must also calculate the Jacobians for this measurement function, if requested.
 
-  Vector evaluateError(const Pose2& q, boost::optional<Matrix&> H = boost::none) const
+  Vector evaluateError(const Moses3& q, boost::optional<Matrix&> H = boost::none) const
   {
     // The measurement function for a GPS-like measurement is simple:
     // error_x = pose.x - measurement.x
@@ -103,8 +105,11 @@ public:
     // Consequently, the Jacobians are:
     // [ derror_x/dx  derror_x/dy  derror_x/dtheta ] = [1 0 0]
     // [ derror_y/dx  derror_y/dy  derror_y/dtheta ] = [0 1 0]
-    if (H) (*H) = (Matrix(2,3) << 1.0,0.0,0.0, 0.0,1.0,0.0);
-    return (Vector(2) << q.x() - mx_, q.y() - my_);
+    if (H) (*H) = (Matrix(2,3) << 1.0,0.0,0.0, 0.0,1.0,0.0); //this is crap for moses3
+    return (Vector(2) << q.x() - m_.x(), q.y() - m_.y());          //this is crap for moses3
+  	
+
+
   }
 
   // The second is a 'clone' function that allows the factor to be copied. Under most
@@ -132,36 +137,46 @@ int main(int argc, char** argv) {
   // Create odometry (Between) factors between consecutive poses
   
 
+	//cout << Rot3::rodriguez(0.0, 0.0, PI/2)<<endl;
 
+
+  //Intermediate constraints
   Rot3 R0 = Rot3(Rot3::rodriguez(0.0, 0.0, 0.0));
   Point3 Pp0(0.0, 0.0, 0.0);
   
-  Rot3 R12 = Rot3(Rot3::rodriguez(0.0, 0.0, 0.0));
+  Rot3 R12 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/2));
   Point3 Pp12(1.0, 0.0, 0.0);
 
-  Rot3 R23 = Rot3(Rot3::rodriguez(0.0, 0.0, 0.0));
-  Point3 Pp23(1.0, 5.0, 0.0);
+  Rot3 R23 = Rot3(Rot3::rodriguez(0.0, 0.0, -PI/2));
+  Point3 Pp23(2.0, 0.0, 0.0);
 
-  //R2 = Rot3::rodriguez(0.0,0,0);
+  Rot3 R34 = Rot3(Rot3::rodriguez(0.0, 0.0, 0.0));
+  Point3 Pp34(-1.0, -4.0, 0.0);
 
+
+  float s0,s12,s23,s34;
+  s0=1;
+  s12=2;
+  s23=0.5;
+  s34=1;
+
+
+  //Initial Estimate
   Point3 Pi1(-1.0, 2.0, 1.0);
   Point3 Pi2(0.0, 1.0, 0.0);
   Point3 Pi3(1.0, 0.0, 0.0);
+  Point3 Pi4(1.0, 2.0, 3.0);
 
   Rot3 Ri1 = Rot3::rodriguez(0.0, 0.0, 0.0);
   Rot3 Ri2 = Rot3::rodriguez(0.0, 0.0, 0.0);
   Rot3 Ri3 = Rot3::rodriguez(0.0, 0.0, 0.0);
+  Rot3 Ri4 = Rot3::rodriguez(0.0, PI, 0.0);
 
-
-  float s0,s12,s23;
-  s0=2;
-  s12=1;
-  s23=1;
-
-  float si1,si2,si3;
+  float si1,si2,si3,si4;
   si1=0.5;
-  si2=6;
+  si2=60;
   si3=10;
+  si4=10;
 
 
 
@@ -169,7 +184,7 @@ int main(int argc, char** argv) {
   // Add a prior on the first pose, setting it to the origin
   // A prior factor consists of a mean and a noise model (covariance matrix)
   Moses3 priorMean(ScSO3(s0*R0.matrix()),Pp0.vector()); // prior at origin
-  noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01));
+  noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001));
   graph.add(PriorFactor<Moses3>(1, priorMean, priorNoise));
 
 
@@ -177,6 +192,7 @@ int main(int argc, char** argv) {
 
   graph.add(BetweenFactor<Moses3>(1, 2, Moses3(ScSO3(s12*R12.matrix()),Pp12.vector()), odometryNoise));
   graph.add(BetweenFactor<Moses3>(2, 3, Moses3(ScSO3(s23*R23.matrix()),Pp23.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(3, 4, Moses3(ScSO3(s34*R34.matrix()),Pp34.vector()), odometryNoise));
   
 
 
@@ -200,6 +216,7 @@ int main(int argc, char** argv) {
   initialEstimate.insert(1, Moses3(ScSO3(si1*Ri1.matrix()),Pi1.vector()));
   initialEstimate.insert(2, Moses3(ScSO3(si2*Ri2.matrix()),Pi2.vector()));
   initialEstimate.insert(3, Moses3(ScSO3(si3*Ri3.matrix()),Pi3.vector()));
+  initialEstimate.insert(4, Moses3(ScSO3(si4*Ri4.matrix()),Pi4.vector()));
   
 
 
