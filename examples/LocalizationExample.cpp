@@ -170,8 +170,8 @@ int main(int argc, char** argv) {
   float s0,s12,s23,s34;
   s0=1; //Initial Prior to origin.
 
-  s12=2.0;
-  s23=0.5;
+  s12=2.2;
+  s23=0.55;
   s34=1.0;
 
 
@@ -208,7 +208,7 @@ int main(int argc, char** argv) {
   // Add a prior on the first pose, setting it to the origin
   // A prior factor consists of a mean and a noise model (covariance matrix)
   Moses3 priorMean(ScSO3(s0*R0.matrix()),Pp0.vector()); // prior at origin
-  noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01));
+  noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 1));
   graph.add(PriorFactor<Moses3>(1, priorMean, priorNoise));
 
 
@@ -221,7 +221,7 @@ int main(int argc, char** argv) {
 
   // 2b. Add "GPS-like" measurements
   // We will use our custom UnaryFactor for this.
-  noiseModel::Diagonal::shared_ptr unaryNoise = noiseModel::Diagonal::Sigmas((Vector(3) << 0.01, 0.01, 0.01)); // 10cm std on x,y
+  noiseModel::Diagonal::shared_ptr unaryNoise = noiseModel::Diagonal::Sigmas((Vector(3) << 0.001, 0.001, 0.001)); // 10cm std on x,y
   graph.add(boost::make_shared<UnaryFactor>(2, Up2, unaryNoise));
   graph.add(boost::make_shared<UnaryFactor>(3, Up3, unaryNoise));
   graph.add(boost::make_shared<UnaryFactor>(4, Up4, unaryNoise));
