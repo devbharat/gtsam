@@ -112,7 +112,7 @@ public:
 	    H->resize(3, 7);
 	    H->block < 3, 3 > (0, 0) << q.Sim3::rotation_matrix(); //deriv. trans NOT TESTED
 	    H->block < 3, 3 > (0, 3) << zeros(3, 3);				//deriv. rot NOT TESTED
-	    H->block < 3, 1 > (0, 4) << zeros(3, 1);				//deriv scale NOT TESTED
+	    H->block < 3, 1 > (0, 4) << zeros(3, 1);	//or ones??			//deriv scale NOT TESTED
 	  }
 
 	Vector3 res =nT_.localCoordinates(Point3(q.Sim3::translation()));
@@ -152,7 +152,7 @@ int main(int argc, char** argv) {
 
 
   //Intermediate constraints
-  Rot3 R0 = Rot3(Rot3::rodriguez(0.0, 0.0, 0.0));
+  Rot3 R0 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/2));
   Point3 Pp0(0.0, 0.0, 0.0);
   
   Rot3 R12 = Rot3(Rot3::rodriguez(0.0, 0.0, 0.0));
@@ -166,14 +166,17 @@ int main(int argc, char** argv) {
 
 
   float s0,s12,s23,s34;
-  s0=1.1;
+  s0=1.6;
   s12=1;
   s23=0.5;
   s34=1;
 
 
   //Unary priors
-  Point3 Up(2, 0.0, 0.0);  
+  Point3 Up(0, 2, 0.0);  
+
+
+
 
   //Initial Estimate values
   Point3 Pi1(0.0, 0.0, 0.0);
@@ -181,7 +184,7 @@ int main(int argc, char** argv) {
   Point3 Pi3(1.0, 0.0, 0.0);
   Point3 Pi4(1.0, 2.0, 3.0);
 
-  Rot3 Ri1 = Rot3::rodriguez(0.0, 0.0, 0.0);
+  Rot3 Ri1 = Rot3::rodriguez(0.0, 0.0, PI/2.5);
   Rot3 Ri2 = Rot3::rodriguez(0.0, 0.0, 0.0);
   Rot3 Ri3 = Rot3::rodriguez(0.0, 0.0, 0.0);
   Rot3 Ri4 = Rot3::rodriguez(0.0, PI, 0.0);
@@ -198,7 +201,7 @@ int main(int argc, char** argv) {
   // Add a prior on the first pose, setting it to the origin
   // A prior factor consists of a mean and a noise model (covariance matrix)
   Moses3 priorMean(ScSO3(s0*R0.matrix()),Pp0.vector()); // prior at origin
-  noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 1));
+  noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 1));
   graph.add(PriorFactor<Moses3>(1, priorMean, priorNoise));
 
 
@@ -211,7 +214,7 @@ int main(int argc, char** argv) {
 
   // 2b. Add "GPS-like" measurements
   // We will use our custom UnaryFactor for this.
-  noiseModel::Diagonal::shared_ptr unaryNoise = noiseModel::Diagonal::Sigmas((Vector(3) << 0.000001, 0.001, 0.001)); // 10cm std on x,y
+  noiseModel::Diagonal::shared_ptr unaryNoise = noiseModel::Diagonal::Sigmas((Vector(3) << 0.01, 0.01, 0.01)); // 10cm std on x,y
   graph.add(boost::make_shared<UnaryFactor>(2, Up, unaryNoise));
 
 
