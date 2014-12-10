@@ -73,6 +73,8 @@ using namespace gtsam;
 #include <gtsam/nonlinear/NonlinearFactor.h>
 
 #define PI 3.14159265359f
+#define useUnary 1
+
 
 namespace gtsam{
 
@@ -116,8 +118,8 @@ public:
 	  }
 
 	Vector3 res =nT_.localCoordinates(Point3(q.Sim3::translation()));
-	cout << "****** "<<res.transpose() <<"   ";
-	cout << nT_.vector().transpose() << "    "<< q.Sim3::translation().transpose() <<" ]]" << endl;
+	//cout << "****** "<<res.transpose() <<"   ";
+	//cout << nT_.vector().transpose() << "    "<< q.Sim3::translation().transpose() <<" ]]" << endl;
   	return res;
 
 
@@ -168,7 +170,7 @@ int main(int argc, char** argv) {
 
 
   float s0,s12,s23,s34;
-  s0=1; //Initial Prior to origin.
+  s0=0.9; //Initial Prior to origin.
 
   s12=2.2;
   s23=0.55;
@@ -207,6 +209,7 @@ int main(int argc, char** argv) {
 
   // Add a prior on the first pose, setting it to the origin
   // A prior factor consists of a mean and a noise model (covariance matrix)
+
   Moses3 priorMean(ScSO3(s0*R0.matrix()),Pp0.vector()); // prior at origin
   noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 1));
   graph.add(PriorFactor<Moses3>(1, priorMean, priorNoise));
@@ -217,17 +220,34 @@ int main(int argc, char** argv) {
   graph.add(BetweenFactor<Moses3>(1, 2, Moses3(ScSO3(s12*R12.matrix()),Pp12.vector()), odometryNoise));
   graph.add(BetweenFactor<Moses3>(2, 3, Moses3(ScSO3(s23*R23.matrix()),Pp23.vector()), odometryNoise));
   graph.add(BetweenFactor<Moses3>(3, 4, Moses3(ScSO3(s34*R34.matrix()),Pp34.vector()), odometryNoise));
-  
+
+  graph.add(BetweenFactor<Moses3>(4, 5, Moses3(ScSO3(s12*R12.matrix()),Pp12.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(5, 6, Moses3(ScSO3(s23*R23.matrix()),Pp23.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(6, 7, Moses3(ScSO3(s34*R34.matrix()),Pp34.vector()), odometryNoise));
+
+  graph.add(BetweenFactor<Moses3>(7, 8, Moses3(ScSO3(s12*R12.matrix()),Pp12.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(8, 9, Moses3(ScSO3(s23*R23.matrix()),Pp23.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(9, 10, Moses3(ScSO3(s34*R34.matrix()),Pp34.vector()), odometryNoise));
+
 
   // 2b. Add "GPS-like" measurements
   // We will use our custom UnaryFactor for this.
   noiseModel::Diagonal::shared_ptr unaryNoise = noiseModel::Diagonal::Sigmas((Vector(3) << 0.001, 0.001, 0.001)); // 10cm std on x,y
+
+if(useUnary){
+  graph.add(boost::make_shared<UnaryFactor>(1, Up1, unaryNoise));  
   graph.add(boost::make_shared<UnaryFactor>(2, Up2, unaryNoise));
   graph.add(boost::make_shared<UnaryFactor>(3, Up3, unaryNoise));
   graph.add(boost::make_shared<UnaryFactor>(4, Up4, unaryNoise));
 
+  graph.add(boost::make_shared<UnaryFactor>(5, Up2, unaryNoise));
+  graph.add(boost::make_shared<UnaryFactor>(6, Up3, unaryNoise));
+  graph.add(boost::make_shared<UnaryFactor>(7, Up4, unaryNoise));
 
-
+  graph.add(boost::make_shared<UnaryFactor>(8, Up2, unaryNoise));
+  graph.add(boost::make_shared<UnaryFactor>(9, Up3, unaryNoise));
+  graph.add(boost::make_shared<UnaryFactor>(10, Up4, unaryNoise));
+}
 
   //graph.add(BetweenFactor<Pose2>(1, 2, Pose2(2.0, 0.0, 0.0), odometryNoise));
   //graph.add(BetweenFactor<Pose2>(2, 3, Pose2(2.0, 0.0, 0.0), odometryNoise));
@@ -248,7 +268,15 @@ int main(int argc, char** argv) {
   initialEstimate.insert(2, Moses3(ScSO3(si2*Ri2.matrix()),Pi2.vector()));
   initialEstimate.insert(3, Moses3(ScSO3(si3*Ri3.matrix()),Pi3.vector()));
   initialEstimate.insert(4, Moses3(ScSO3(si4*Ri4.matrix()),Pi4.vector()));
-  
+
+  initialEstimate.insert(5, Moses3(ScSO3(si2*Ri2.matrix()),Pi2.vector()));
+  initialEstimate.insert(6, Moses3(ScSO3(si3*Ri3.matrix()),Pi3.vector()));
+  initialEstimate.insert(7, Moses3(ScSO3(si4*Ri4.matrix()),Pi4.vector()));
+ 
+  initialEstimate.insert(8, Moses3(ScSO3(si2*Ri2.matrix()),Pi2.vector()));
+  initialEstimate.insert(9, Moses3(ScSO3(si3*Ri3.matrix()),Pi3.vector()));
+  initialEstimate.insert(10, Moses3(ScSO3(si4*Ri4.matrix()),Pi4.vector()));
+
 
 
 
@@ -272,9 +300,10 @@ int main(int argc, char** argv) {
 
   // 5. Calculate and print marginal covariances for all variables
   Marginals marginals(graph, result);
-  //cout << "x1 covariance:\n" << marginals.marginalCovariance(1) << endl;
-  //cout << "x2 covariance:\n" << marginals.marginalCovariance(2) << endl;
-  //cout << "x3 covariance:\n" << marginals.marginalCovariance(3) << endl;
+  cout << "x1 covariance:\n" << marginals.marginalCovariance(1) << endl;
+  cout << "x2 covariance:\n" << marginals.marginalCovariance(2) << endl;
+  cout << "x3 covariance:\n" << marginals.marginalCovariance(3) << endl;
+  cout << "x4 covariance:\n" << marginals.marginalCovariance(4) << endl;
 
   return 0;
 }
