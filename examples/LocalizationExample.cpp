@@ -35,6 +35,7 @@
 
 // As in OdometryExample.cpp, we use a BetweenFactor to model odometry measurements.
 #include <gtsam/slam/BetweenFactor.h>
+ #include <gtsam/slam/PriorFactor.h>
 
 // We add all facors to a Nonlinear Factor Graph, as our factors are nonlinear.
 #include <gtsam/nonlinear/NonlinearFactorGraph.h>
@@ -132,23 +133,31 @@ int main(int argc, char** argv) {
   
 
 
-
+  Rot3 R0 = Rot3(Point3(1.0, 0.0 , 0.0),Point3(0.0, 1.0 , 0.0),Point3(0.0, 0.0 , 1.0));
+  Point3 Pp0(0.0,0.0,0.0);
   
   Rot3 R1 = Rot3(Point3(1.0, 0.0 , 0.0),Point3(0.0, 1.0 , 0.0),Point3(0.0, 0.0 , 1.0));
   Point3 Pp1(1.0,0.0,0.0);
 
   Rot3 R2 = Rot3(Point3(1.0, 0.0 , 0.0),Point3(0.0, 1.0 , 0.0),Point3(0.0, 0.0 , 1.0));
-  Point3 Pp2(2.0,0.0,0.0);
+  Point3 Pp2(1.0,0.0,0.0);
 
-  graph.add(BetweenFactor<Moses3>(1, 2, Moses3(ScSO3(R1.matrix()),Pp1.vector()), odometryNoise));
-  graph.add(BetweenFactor<Moses3>(2, 3, Moses3(ScSO3(R2.matrix()),Pp2.vector()), odometryNoise));
+  //R2 = Rot3::rodriguez(0.0,0,0);;
+
+
+
+  // Add a prior on the first pose, setting it to the origin
+  // A prior factor consists of a mean and a noise model (covariance matrix)
+  Moses3 priorMean(ScSO3(2*R0.matrix()),Pp0.vector()); // prior at origin
+  noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01));
+  graph.add(PriorFactor<Moses3>(1, priorMean, priorNoise));
+
+
+
+
+  graph.add(BetweenFactor<Moses3>(1, 2, Moses3(ScSO3(2*R1.matrix()),Pp1.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(2, 3, Moses3(ScSO3(2*R1.matrix()),Pp1.vector()), odometryNoise));
   
-
-
-
-
-
-
 
 
 
@@ -169,8 +178,8 @@ int main(int argc, char** argv) {
   Values initialEstimate;
   
   Point3 P1(0.0,0.0,0.0);
-  Point3 P2(1.0,0.0,0.0);
-  Point3 P3(5.0,0.0,0.0);
+  Point3 P2(0.0,0.0,0.0);
+  Point3 P3(0.0,0.0,0.0);
 
 
   initialEstimate.insert(1, Moses3(ScSO3(R1.matrix()),P1.vector()));
@@ -200,9 +209,9 @@ int main(int argc, char** argv) {
 
   // 5. Calculate and print marginal covariances for all variables
   Marginals marginals(graph, result);
-  cout << "x1 covariance:\n" << marginals.marginalCovariance(1) << endl;
-  cout << "x2 covariance:\n" << marginals.marginalCovariance(2) << endl;
-  cout << "x3 covariance:\n" << marginals.marginalCovariance(3) << endl;
+  //cout << "x1 covariance:\n" << marginals.marginalCovariance(1) << endl;
+  //cout << "x2 covariance:\n" << marginals.marginalCovariance(2) << endl;
+  //cout << "x3 covariance:\n" << marginals.marginalCovariance(3) << endl;
 
   return 0;
 }
