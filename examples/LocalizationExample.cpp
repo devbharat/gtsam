@@ -133,30 +133,50 @@ int main(int argc, char** argv) {
   
 
 
-  Rot3 R0 = Rot3(Point3(1.0, 0.0 , 0.0),Point3(0.0, 1.0 , 0.0),Point3(0.0, 0.0 , 1.0));
-  Point3 Pp0(0.0,0.0,0.0);
+  Rot3 R0 = Rot3(Rot3::rodriguez(0.0, 0.0, 0.0));
+  Point3 Pp0(0.0, 0.0, 0.0);
   
-  Rot3 R1 = Rot3(Point3(1.0, 0.0 , 0.0),Point3(0.0, 1.0 , 0.0),Point3(0.0, 0.0 , 1.0));
-  Point3 Pp1(1.0,0.0,0.0);
+  Rot3 R12 = Rot3(Rot3::rodriguez(0.0, 0.0, 0.0));
+  Point3 Pp12(1.0, 0.0, 0.0);
 
-  Rot3 R2 = Rot3(Point3(1.0, 0.0 , 0.0),Point3(0.0, 1.0 , 0.0),Point3(0.0, 0.0 , 1.0));
-  Point3 Pp2(1.0,0.0,0.0);
+  Rot3 R23 = Rot3(Rot3::rodriguez(0.0, 0.0, 0.0));
+  Point3 Pp23(1.0, 5.0, 0.0);
 
-  //R2 = Rot3::rodriguez(0.0,0,0);;
+  //R2 = Rot3::rodriguez(0.0,0,0);
+
+  Point3 Pi1(-1.0, 2.0, 1.0);
+  Point3 Pi2(0.0, 1.0, 0.0);
+  Point3 Pi3(1.0, 0.0, 0.0);
+
+  Rot3 Ri1 = Rot3::rodriguez(0.0, 0.0, 0.0);
+  Rot3 Ri2 = Rot3::rodriguez(0.0, 0.0, 0.0);
+  Rot3 Ri3 = Rot3::rodriguez(0.0, 0.0, 0.0);
+
+
+  float s0,s12,s23;
+  s0=2;
+  s12=1;
+  s23=1;
+
+  float si1,si2,si3;
+  si1=0.5;
+  si2=6;
+  si3=10;
+
 
 
 
   // Add a prior on the first pose, setting it to the origin
   // A prior factor consists of a mean and a noise model (covariance matrix)
-  Moses3 priorMean(ScSO3(2*R0.matrix()),Pp0.vector()); // prior at origin
+  Moses3 priorMean(ScSO3(s0*R0.matrix()),Pp0.vector()); // prior at origin
   noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01));
   graph.add(PriorFactor<Moses3>(1, priorMean, priorNoise));
 
 
 
 
-  graph.add(BetweenFactor<Moses3>(1, 2, Moses3(ScSO3(2*R1.matrix()),Pp1.vector()), odometryNoise));
-  graph.add(BetweenFactor<Moses3>(2, 3, Moses3(ScSO3(2*R1.matrix()),Pp1.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(1, 2, Moses3(ScSO3(s12*R12.matrix()),Pp12.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(2, 3, Moses3(ScSO3(s23*R23.matrix()),Pp23.vector()), odometryNoise));
   
 
 
@@ -176,15 +196,10 @@ int main(int argc, char** argv) {
   // 3. Create the data structure to hold the initialEstimate estimate to the solution
   // For illustrative purposes, these have been deliberately set to incorrect values
   Values initialEstimate;
-  
-  Point3 P1(0.0,0.0,0.0);
-  Point3 P2(0.0,0.0,0.0);
-  Point3 P3(0.0,0.0,0.0);
 
-
-  initialEstimate.insert(1, Moses3(ScSO3(R1.matrix()),P1.vector()));
-  initialEstimate.insert(2, Moses3(ScSO3(R1.matrix()),P2.vector()));
-  initialEstimate.insert(3, Moses3(ScSO3(R1.matrix()),P3.vector()));
+  initialEstimate.insert(1, Moses3(ScSO3(si1*Ri1.matrix()),Pi1.vector()));
+  initialEstimate.insert(2, Moses3(ScSO3(si2*Ri2.matrix()),Pi2.vector()));
+  initialEstimate.insert(3, Moses3(ScSO3(si3*Ri3.matrix()),Pi3.vector()));
   
 
 
