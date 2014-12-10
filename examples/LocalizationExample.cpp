@@ -80,15 +80,15 @@ class UnaryFactor: public NoiseModelFactor1<Moses3> {
 
   // The factor will hold a measurement consisting of an (X,Y) location
   // We could this with a Point2 but here we just use two doubles
-  Moses3 m_;
+  Point3 nT_;
 
 public:
   /// shorthand for a smart pointer to a factor
   typedef boost::shared_ptr<UnaryFactor> shared_ptr;
 
   // The constructor requires the variable key, the (X, Y) measurement value, and the noise model
-  UnaryFactor(Key j, Moses3 p, const SharedNoiseModel& model):
-    NoiseModelFactor1<Moses3>(model, j), m_(p) {}
+  UnaryFactor(Key j, const Point3& gpsIn, const SharedNoiseModel& model):
+    NoiseModelFactor1<Moses3>(model, j), nT_(gpsIn) {}
 
   virtual ~UnaryFactor() {}
 
@@ -105,9 +105,17 @@ public:
     // Consequently, the Jacobians are:
     // [ derror_x/dx  derror_x/dy  derror_x/dtheta ] = [1 0 0]
     // [ derror_y/dx  derror_y/dy  derror_y/dtheta ] = [0 1 0]
-    if (H) (*H) = (Matrix(2,3) << 1.0,0.0,0.0, 0.0,1.0,0.0); //this is crap for moses3
-    return (Vector(2) << q.x() - m_.x(), q.y() - m_.y());          //this is crap for moses3
-  	
+    //if (H) (*H) = (Matrix(2,3) << 1.0,0.0,0.0, 0.0,1.0,0.0); //this is crap for moses3
+    //return (Vector(2) << q.x() - m_.x(), q.y() - m_.y());          //this is crap for moses3
+
+    if (H) {
+	    H->resize(3, 7);
+	    H->block < 3, 3 > (0, 0) << q.Sim3::rotation_matrix(); //deriv. trans NOT TESTED
+	    H->block < 3, 3 > (0, 3) << zeros(3, 3);				//deriv. rot NOT TESTED
+	    H->block < 3, 1 > (0, 4) << zeros(3, 1);				//deriv scale NOT TESTED
+	  }
+
+  	return nT_.localCoordinates(Point3(q.Sim3::translation()));
 
 
   }
@@ -161,7 +169,10 @@ int main(int argc, char** argv) {
   s34=1;
 
 
-  //Initial Estimate
+  //Unary priors
+  Point3 Up1(0.0, 0.0, 0.0);  
+
+  //Initial Estimate values
   Point3 Pi1(-1.0, 2.0, 1.0);
   Point3 Pi2(0.0, 1.0, 0.0);
   Point3 Pi3(1.0, 0.0, 0.0);
@@ -184,7 +195,7 @@ int main(int argc, char** argv) {
   // Add a prior on the first pose, setting it to the origin
   // A prior factor consists of a mean and a noise model (covariance matrix)
   Moses3 priorMean(ScSO3(s0*R0.matrix()),Pp0.vector()); // prior at origin
-  noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001));
+  noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 1));
   graph.add(PriorFactor<Moses3>(1, priorMean, priorNoise));
 
 
@@ -194,6 +205,11 @@ int main(int argc, char** argv) {
   graph.add(BetweenFactor<Moses3>(2, 3, Moses3(ScSO3(s23*R23.matrix()),Pp23.vector()), odometryNoise));
   graph.add(BetweenFactor<Moses3>(3, 4, Moses3(ScSO3(s34*R34.matrix()),Pp34.vector()), odometryNoise));
   
+
+  // 2b. Add "GPS-like" measurements
+  // We will use our custom UnaryFactor for this.
+  noiseModel::Diagonal::shared_ptr unaryNoise = noiseModel::Diagonal::Sigmas((Vector(3) << 0.000001, 0.001, 0.001)); // 10cm std on x,y
+  graph.add(boost::make_shared<UnaryFactor>(1, Up1, unaryNoise));
 
 
 
