@@ -305,5 +305,13 @@ if(useUnary){
   cout << "x3 covariance:\n" << marginals.marginalCovariance(3) << endl;
   cout << "x4 covariance:\n" << marginals.marginalCovariance(4) << endl;
 
+  cout << "x5 covariance:\n" << marginals.marginalCovariance(5) << endl;
+  cout << "x6 covariance:\n" << marginals.marginalCovariance(6) << endl;
+  cout << "x7 covariance:\n" << marginals.marginalCovariance(7) << endl;
+  cout << "x8 covariance:\n" << marginals.marginalCovariance(8) << endl;
+
+  cout << "x9 covariance:\n" << marginals.marginalCovariance(9) << endl;
+  cout << "x10 covariance:\n" << marginals.marginalCovariance(10) << endl;
+
   return 0;
 }
