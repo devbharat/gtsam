@@ -74,6 +74,7 @@ using namespace gtsam;
 
 #define PI 3.14159265359f
 #define useUnary 1
+#define printCov 0
 
 
 namespace gtsam{
@@ -159,44 +160,76 @@ int main(int argc, char** argv) {
   
 
 
-  Rot3 R12 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/2));
+  Rot3 R12 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
   Point3 Pp12(1.0, 0.0, 0.0);
 
-  Rot3 R23 = Rot3(Rot3::rodriguez(0.0, 0.0, -PI/2));
-  Point3 Pp23(2.0, 0.0, 0.0);   
+  Rot3 R23 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Point3 Pp23(1.0, 0.0, 0.0);   
 
-  Rot3 R34 = Rot3(Rot3::rodriguez(0.0, 0.0, 0.0));
-  Point3 Pp34(-1.0, -4.0, 0.0);
+  Rot3 R34 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Point3 Pp34(1.0, 0.0, 0.0);
 
 
-  float s0,s12,s23,s34;
-  s0=0.9; //Initial Prior to origin.
 
-  s12=2.2;
-  s23=0.55;
-  s34=1.0;
+  Rot3 R45 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Point3 Pp45(1.0, 0.0, 0.0);
+
+  Rot3 R56 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Point3 Pp56(1.0, 0.0, 0.0);   
+
+  Rot3 R67 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Point3 Pp67(1.0, 0.0, 0.0);
+
+
+  Rot3 R78 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Point3 Pp78(1.0, 0.0, 0.0);
+
+  Rot3 R89 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Point3 Pp89(1.0, 0.0, 0.0);   
+
+  Rot3 R90 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Point3 Pp90(1.0, 0.0, 0.0);
+
+
+
+  float s0,s12,s23,s34,s45,s56,s67,s78,s89,s90;
+  s0=1; //Initial Prior to origin.
+
+  s12=0.95;
+  s23=0.9;
+  s34=0.85;
+  s45=0.8;
+  s56=0.75;
+  s67=0.7;
+  s78=0.65;
+  s89=0.6;
+  s90=0.55;
 
 
   //Unary priors
   Point3 Up1(0, 0, 0.0);  
-  Point3 Up2(1, 0, 0.0);  
-  Point3 Up3(1, 4, 0.0);  
-  Point3 Up4(0, 0, 0.0);  
-
-
+  Point3 Up2(1, -3.78165e-17, 0.0);  
+  Point3 Up3(1.93969, 0.34202, 0.0);  
+  Point3 Up4(2.70574, 0.984808, 0.0);  
+  Point3 Up5(3.20574, 1.85083, 0.0);  
+  Point3 Up6(3.37939, 2.83564, 0.0);  
+  Point3 Up7(3.20574, 3.82045, 0.0);  
+  Point3 Up8(2.70574, 4.68647, 0.0);  
+  Point3 Up9(1.93969, 5.32926, 0.0);  
+  Point3 Up10(1, 5.67128, 0.0);  
 
 
   //Initial Estimate values
   Point3 Pi1(0.0, 0.0, 0.0);
-  Point3 Pi2(1.0, 1.0, 1.0);
+  Point3 Pi2(1.0, 0.0, 0.0);
   Point3 Pi3(1.0, 0.0, 0.0);
-  Point3 Pi4(1.0, 2.0, 3.0);
+  Point3 Pi4(1.0, 0.0, 0.0);
 
 
-  Rot3 Ri1 = Rot3::rodriguez(0.0, 0.0, PI/2.5);
-  Rot3 Ri2 = Rot3::rodriguez(0.0, 0.0, 0.0);
-  Rot3 Ri3 = Rot3::rodriguez(0.0, 0.0, 0.0);
-  Rot3 Ri4 = Rot3::rodriguez(0.0, PI, 0.0);
+  Rot3 Ri1 = Rot3::rodriguez(0.2, 0.5, 0);
+  Rot3 Ri2 = Rot3::rodriguez(0.1, 0.7, 0.2);
+  Rot3 Ri3 = Rot3::rodriguez(0.6, 0.3, 0.6);
+  Rot3 Ri4 = Rot3::rodriguez(0.4, 0.4, 0.5);
 
   float si1,si2,si3,si4;
   si1=1;
@@ -221,13 +254,13 @@ int main(int argc, char** argv) {
   graph.add(BetweenFactor<Moses3>(2, 3, Moses3(ScSO3(s23*R23.matrix()),Pp23.vector()), odometryNoise));
   graph.add(BetweenFactor<Moses3>(3, 4, Moses3(ScSO3(s34*R34.matrix()),Pp34.vector()), odometryNoise));
 
-  graph.add(BetweenFactor<Moses3>(4, 5, Moses3(ScSO3(s12*R12.matrix()),Pp12.vector()), odometryNoise));
-  graph.add(BetweenFactor<Moses3>(5, 6, Moses3(ScSO3(s23*R23.matrix()),Pp23.vector()), odometryNoise));
-  graph.add(BetweenFactor<Moses3>(6, 7, Moses3(ScSO3(s34*R34.matrix()),Pp34.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(4, 5, Moses3(ScSO3(s45*R45.matrix()),Pp45.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(5, 6, Moses3(ScSO3(s56*R56.matrix()),Pp56.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(6, 7, Moses3(ScSO3(s67*R67.matrix()),Pp67.vector()), odometryNoise));
 
-  graph.add(BetweenFactor<Moses3>(7, 8, Moses3(ScSO3(s12*R12.matrix()),Pp12.vector()), odometryNoise));
-  graph.add(BetweenFactor<Moses3>(8, 9, Moses3(ScSO3(s23*R23.matrix()),Pp23.vector()), odometryNoise));
-  graph.add(BetweenFactor<Moses3>(9, 10, Moses3(ScSO3(s34*R34.matrix()),Pp34.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(7, 8, Moses3(ScSO3(s78*R78.matrix()),Pp78.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(8, 9, Moses3(ScSO3(s89*R89.matrix()),Pp89.vector()), odometryNoise));
+  graph.add(BetweenFactor<Moses3>(9, 10, Moses3(ScSO3(s90*R90.matrix()),Pp90.vector()), odometryNoise));
 
 
   // 2b. Add "GPS-like" measurements
@@ -240,13 +273,13 @@ if(useUnary){
   graph.add(boost::make_shared<UnaryFactor>(3, Up3, unaryNoise));
   graph.add(boost::make_shared<UnaryFactor>(4, Up4, unaryNoise));
 
-  graph.add(boost::make_shared<UnaryFactor>(5, Up2, unaryNoise));
-  graph.add(boost::make_shared<UnaryFactor>(6, Up3, unaryNoise));
-  graph.add(boost::make_shared<UnaryFactor>(7, Up4, unaryNoise));
+  graph.add(boost::make_shared<UnaryFactor>(5, Up5, unaryNoise));
+  graph.add(boost::make_shared<UnaryFactor>(6, Up6, unaryNoise));
+  graph.add(boost::make_shared<UnaryFactor>(7, Up7, unaryNoise));
 
-  graph.add(boost::make_shared<UnaryFactor>(8, Up2, unaryNoise));
-  graph.add(boost::make_shared<UnaryFactor>(9, Up3, unaryNoise));
-  graph.add(boost::make_shared<UnaryFactor>(10, Up4, unaryNoise));
+  graph.add(boost::make_shared<UnaryFactor>(8, Up8, unaryNoise));
+  graph.add(boost::make_shared<UnaryFactor>(9, Up9, unaryNoise));
+  graph.add(boost::make_shared<UnaryFactor>(10, Up10, unaryNoise));
 }
 
   //graph.add(BetweenFactor<Pose2>(1, 2, Pose2(2.0, 0.0, 0.0), odometryNoise));
@@ -258,7 +291,8 @@ if(useUnary){
   //graph.add(boost::make_shared<UnaryFactor>(1, 0.0, 0.0, unaryNoise));
   //graph.add(boost::make_shared<UnaryFactor>(2, 2.0, 0.0, unaryNoise));
   //graph.add(boost::make_shared<UnaryFactor>(3, 4.0, 0.0, unaryNoise));
-  graph.print("\nFactor Graph:\n"); // print
+  
+  //graph.print("\nFactor Graph:\n"); // print
 
   // 3. Create the data structure to hold the initialEstimate estimate to the solution
   // For illustrative purposes, these have been deliberately set to incorrect values
@@ -300,6 +334,8 @@ if(useUnary){
 
   // 5. Calculate and print marginal covariances for all variables
   Marginals marginals(graph, result);
+
+if(printCov){
   cout << "x1 covariance:\n" << marginals.marginalCovariance(1) << endl;
   cout << "x2 covariance:\n" << marginals.marginalCovariance(2) << endl;
   cout << "x3 covariance:\n" << marginals.marginalCovariance(3) << endl;
@@ -312,6 +348,6 @@ if(useUnary){
 
   cout << "x9 covariance:\n" << marginals.marginalCovariance(9) << endl;
   cout << "x10 covariance:\n" << marginals.marginalCovariance(10) << endl;
-
+}
   return 0;
 }
