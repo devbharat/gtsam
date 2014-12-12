@@ -113,9 +113,9 @@ public:
 
     if (H) {
 	    H->resize(3, 7);
-	    H->block < 3, 3 > (0, 0) << q.Sim3::rotation_matrix(); //deriv. trans NOT TESTED
-	    H->block < 3, 3 > (0, 3) << zeros(3, 3);				//deriv. rot NOT TESTED
-	    H->block < 3, 1 > (0, 4) << zeros(3, 1);	//or ones??			//deriv scale NOT TESTED
+	    H->block < 3, 3 > (0, 0) << q.Sim3::rotation_matrix();  //deriv. trans NOT TESTED
+	    H->block < 3, 3 > (0, 3) << zeros(3,3);				//deriv. rot NOT TESTED
+	    H->block < 3, 1 > (0, 4) << zeros(3, 1);	      		//deriv scale NOT TESTED
 	  }
 
 	Vector3 res =nT_.localCoordinates(Point3(q.Sim3::translation()));
@@ -144,6 +144,9 @@ int main(int argc, char** argv) {
 
   // 1. Create a factor graph container and add factors to it
   NonlinearFactorGraph graph;
+  NonlinearFactorGraph graphWithGPS;
+
+
 
   // 2a. Add odometry factors
   // For simplicity, we will use the same noise model for each odometry factor
@@ -221,15 +224,23 @@ int main(int argc, char** argv) {
 
   //Initial Estimate values
   Point3 Pi1(0.0, 0.0, 0.0);
-  Point3 Pi2(1.0, 0.0, 0.0);
-  Point3 Pi3(1.0, 0.0, 0.0);
-  Point3 Pi4(1.0, 0.0, 0.0);
+  Point3 Pi2(1.0, 1.0, 0.0);
+  Point3 Pi3(2.0, 1.0, 0.0);
+  Point3 Pi4(3.0, 1.0, 0.0);
+  Point3 Pi5(4.0, 1.0, 0.0);
+  Point3 Pi6(5.0, 1.0, 0.0);
+  Point3 Pi7(6.0, 1.0, 0.0);
+  Point3 Pi8(7.0, 1.0, 0.0);
+  Point3 Pi9(8.0, 1.0, 0.0);
+  Point3 Pi10(9.0, 1.0, 0.0);
 
 
-  Rot3 Ri1 = Rot3::rodriguez(0.2, 0.5, 0);
-  Rot3 Ri2 = Rot3::rodriguez(0.1, 0.7, 0.2);
-  Rot3 Ri3 = Rot3::rodriguez(0.6, 0.3, 0.6);
-  Rot3 Ri4 = Rot3::rodriguez(0.4, 0.4, 0.5);
+
+
+  Rot3 Ri1 = Rot3::rodriguez(0.0, 0.0, PI/2);
+  Rot3 Ri2 = Rot3::rodriguez(0.0, 0.0, PI/2);
+  Rot3 Ri3 = Rot3::rodriguez(0.0, 0.0, PI/2);
+  Rot3 Ri4 = Rot3::rodriguez(0.0, 0.0, PI/2);
 
   float si1,si2,si3,si4;
   si1=1;
@@ -246,7 +257,7 @@ int main(int argc, char** argv) {
   Moses3 priorMean(ScSO3(s0*R0.matrix()),Pp0.vector()); // prior at origin
   noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 1));
   graph.add(PriorFactor<Moses3>(1, priorMean, priorNoise));
-
+  
 
 
 
@@ -263,23 +274,38 @@ int main(int argc, char** argv) {
   graph.add(BetweenFactor<Moses3>(9, 10, Moses3(ScSO3(s90*R90.matrix()),Pp90.vector()), odometryNoise));
 
 
+
+  graphWithGPS = graph;
+
   // 2b. Add "GPS-like" measurements
   // We will use our custom UnaryFactor for this.
-  noiseModel::Diagonal::shared_ptr unaryNoise = noiseModel::Diagonal::Sigmas((Vector(3) << 0.001, 0.001, 0.001)); // 10cm std on x,y
+  noiseModel::Diagonal::shared_ptr unaryNoise = noiseModel::Diagonal::Sigmas((Vector(3) << 0.01, 0.01, 0.01)); // 10cm std on x,y
 
 if(useUnary){
-  graph.add(boost::make_shared<UnaryFactor>(1, Up1, unaryNoise));  
-  graph.add(boost::make_shared<UnaryFactor>(2, Up2, unaryNoise));
-  graph.add(boost::make_shared<UnaryFactor>(3, Up3, unaryNoise));
-  graph.add(boost::make_shared<UnaryFactor>(4, Up4, unaryNoise));
+  graphWithGPS.add(boost::make_shared<UnaryFactor>(1, Up1, unaryNoise));  
+  graphWithGPS.add(boost::make_shared<UnaryFactor>(2, Up2, unaryNoise));
+  graphWithGPS.add(boost::make_shared<UnaryFactor>(3, Up3, unaryNoise));
+  graphWithGPS.add(boost::make_shared<UnaryFactor>(4, Up4, unaryNoise));
 
-  graph.add(boost::make_shared<UnaryFactor>(5, Up5, unaryNoise));
-  graph.add(boost::make_shared<UnaryFactor>(6, Up6, unaryNoise));
-  graph.add(boost::make_shared<UnaryFactor>(7, Up7, unaryNoise));
+  graphWithGPS.add(boost::make_shared<UnaryFactor>(5, Up5, unaryNoise));
+  graphWithGPS.add(boost::make_shared<UnaryFactor>(6, Up6, unaryNoise));
+  graphWithGPS.add(boost::make_shared<UnaryFactor>(7, Up7, unaryNoise));
 
-  graph.add(boost::make_shared<UnaryFactor>(8, Up8, unaryNoise));
-  graph.add(boost::make_shared<UnaryFactor>(9, Up9, unaryNoise));
-  graph.add(boost::make_shared<UnaryFactor>(10, Up10, unaryNoise));
+  graphWithGPS.add(boost::make_shared<UnaryFactor>(8, Up8, unaryNoise));
+  graphWithGPS.add(boost::make_shared<UnaryFactor>(9, Up9, unaryNoise));
+  graphWithGPS.add(boost::make_shared<UnaryFactor>(10, Up10, unaryNoise));
+
+  cout << "GPS Points:"<<endl;
+  cout << Up1<<endl;
+  cout << Up2<<endl;
+  cout << Up3<<endl;
+  cout << Up4<<endl;
+  cout << Up5<<endl;
+  cout << Up6<<endl;
+  cout << Up7<<endl;
+  cout << Up8<<endl;
+  cout << Up9<<endl;
+  cout << Up10<<endl;
 }
 
   //graph.add(BetweenFactor<Pose2>(1, 2, Pose2(2.0, 0.0, 0.0), odometryNoise));
@@ -303,13 +329,13 @@ if(useUnary){
   initialEstimate.insert(3, Moses3(ScSO3(si3*Ri3.matrix()),Pi3.vector()));
   initialEstimate.insert(4, Moses3(ScSO3(si4*Ri4.matrix()),Pi4.vector()));
 
-  initialEstimate.insert(5, Moses3(ScSO3(si2*Ri2.matrix()),Pi2.vector()));
-  initialEstimate.insert(6, Moses3(ScSO3(si3*Ri3.matrix()),Pi3.vector()));
-  initialEstimate.insert(7, Moses3(ScSO3(si4*Ri4.matrix()),Pi4.vector()));
+  initialEstimate.insert(5, Moses3(ScSO3(si2*Ri2.matrix()),Pi5.vector()));
+  initialEstimate.insert(6, Moses3(ScSO3(si3*Ri3.matrix()),Pi6.vector()));
+  initialEstimate.insert(7, Moses3(ScSO3(si4*Ri4.matrix()),Pi7.vector()));
  
-  initialEstimate.insert(8, Moses3(ScSO3(si2*Ri2.matrix()),Pi2.vector()));
-  initialEstimate.insert(9, Moses3(ScSO3(si3*Ri3.matrix()),Pi3.vector()));
-  initialEstimate.insert(10, Moses3(ScSO3(si4*Ri4.matrix()),Pi4.vector()));
+  initialEstimate.insert(8, Moses3(ScSO3(si2*Ri2.matrix()),Pi8.vector()));
+  initialEstimate.insert(9, Moses3(ScSO3(si3*Ri3.matrix()),Pi9.vector()));
+  initialEstimate.insert(10, Moses3(ScSO3(si4*Ri4.matrix()),Pi10.vector()));
 
 
 
@@ -332,8 +358,14 @@ if(useUnary){
   Values result = optimizer.optimize();
   result.print("Final Result:\n");
 
+  LevenbergMarquardtOptimizer optimizerWithGPS(graphWithGPS, initialEstimate);
+  Values resultWithGPS = optimizerWithGPS.optimize();
+  resultWithGPS.print("FinalWithGPS Result:\n");
+
   // 5. Calculate and print marginal covariances for all variables
   Marginals marginals(graph, result);
+  Marginals marginalsWithGPS(graphWithGPS, resultWithGPS);
+
 
 if(printCov){
   cout << "x1 covariance:\n" << marginals.marginalCovariance(1) << endl;
