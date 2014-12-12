@@ -19,6 +19,7 @@
 #include "GPSFactor.h"
 
 using namespace std;
+using namespace Sophus;
 
 namespace gtsam {
 
@@ -35,19 +36,21 @@ bool GPSFactor::equals(const NonlinearFactor& expected, double tol) const {
   return e != NULL && Base::equals(*e, tol) && this->nT_.equals(e->nT_, tol);
 }
 
-//***************************************************************************
-Vector GPSFactor::evaluateError(const Pose3& p,
-    boost::optional<Matrix&> H) const {
-  if (H) {
-    H->resize(3, 6);
-    H->block < 3, 3 > (0, 0) << zeros(3, 3);
-    H->block < 3, 3 > (0, 3) << p.rotation().matrix();
-  }
-  // manifold equivalent of h(x)-z -> log(z,h(x))
-  return nT_.localCoordinates(p.translation());
-}
 
 //***************************************************************************
+Vector GPSFactor::evaluateError(const Moses3& p,
+    boost::optional<Matrix&> H) const {
+  if (H) {
+    H->resize(3, 7);
+    H->block < 3, 3 > (0, 0) << p.rotation_matrix();
+    H->block < 3, 3 > (0, 3) << zeros(3, 3);
+    H->block < 3, 1 > (0, 6) << ones(3, 1);
+  }
+  // manifold equivalent of h(x)-z -> log(z,h(x))
+  return nT_.localCoordinates(Point3(p.Sim3::translation()));
+}
+
+/***************************************************************************
 pair<Pose3, Vector3> GPSFactor::EstimateState(double t1, const Point3& NED1,
     double t2, const Point3& NED2, double timestamp) {
   // Estimate initial velocity as difference in NED frame
@@ -69,6 +72,7 @@ pair<Pose3, Vector3> GPSFactor::EstimateState(double t1, const Point3& NED1,
 
   return make_pair(nTb, nV.vector());
 }
+*/
 //***************************************************************************
 
 }/// namespace gtsam

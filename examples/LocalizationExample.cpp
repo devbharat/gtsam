@@ -36,6 +36,7 @@
 // As in OdometryExample.cpp, we use a BetweenFactor to model odometry measurements.
 #include <gtsam/slam/BetweenFactor.h>
  #include <gtsam/slam/PriorFactor.h>
+ #include <gtsam/navigation/GPSFactor.h>
 
 // We add all facors to a Nonlinear Factor Graph, as our factors are nonlinear.
 #include <gtsam/nonlinear/NonlinearFactorGraph.h>
@@ -115,7 +116,9 @@ public:
 	    H->resize(3, 7);
 	    H->block < 3, 3 > (0, 0) << q.Sim3::rotation_matrix();  //deriv. trans NOT TESTED
 	    H->block < 3, 3 > (0, 3) << zeros(3,3);				//deriv. rot NOT TESTED
-	    H->block < 3, 1 > (0, 4) << zeros(3, 1);	      		//deriv scale NOT TESTED
+	    H->block < 3, 1 > (0, 6) << zeros(3, 1);	//6 not 4      		//deriv scale NOT TESTED
+
+
 	  }
 
 	Vector3 res =nT_.localCoordinates(Point3(q.Sim3::translation()));
@@ -138,6 +141,9 @@ public:
   // GTSAM_CONCEPT_TESTABLE_INST(T) defined in Testable.h, but these are not needed below.
 
 }; // UnaryFactor
+
+
+
 
 }
 int main(int argc, char** argv) {
@@ -162,35 +168,36 @@ int main(int argc, char** argv) {
   Point3 Pp0(0.0, 0.0, 0.0);  
   
 
+  int minus = +1;
 
-  Rot3 R12 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Rot3 R12 = Rot3(Rot3::rodriguez(0.0, 0.0, minus*PI/9.0));
   Point3 Pp12(1.0, 0.0, 0.0);
 
-  Rot3 R23 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Rot3 R23 = Rot3(Rot3::rodriguez(0.0, 0.0, minus*PI/9.0));
   Point3 Pp23(1.0, 0.0, 0.0);   
 
-  Rot3 R34 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Rot3 R34 = Rot3(Rot3::rodriguez(0.0, 0.0, minus*PI/9.0));
   Point3 Pp34(1.0, 0.0, 0.0);
 
 
 
-  Rot3 R45 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Rot3 R45 = Rot3(Rot3::rodriguez(0.0, 0.0, minus*PI/9.0));
   Point3 Pp45(1.0, 0.0, 0.0);
 
-  Rot3 R56 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Rot3 R56 = Rot3(Rot3::rodriguez(0.0, 0.0, minus*PI/9.0));
   Point3 Pp56(1.0, 0.0, 0.0);   
 
-  Rot3 R67 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Rot3 R67 = Rot3(Rot3::rodriguez(0.0, 0.0, minus*PI/9.0));
   Point3 Pp67(1.0, 0.0, 0.0);
 
 
-  Rot3 R78 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Rot3 R78 = Rot3(Rot3::rodriguez(0.0, 0.0, minus*PI/9.0));
   Point3 Pp78(1.0, 0.0, 0.0);
 
-  Rot3 R89 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Rot3 R89 = Rot3(Rot3::rodriguez(0.0, 0.0, minus*PI/9.0));
   Point3 Pp89(1.0, 0.0, 0.0);   
 
-  Rot3 R90 = Rot3(Rot3::rodriguez(0.0, 0.0, PI/9.0));
+  Rot3 R90 = Rot3(Rot3::rodriguez(0.0, 0.0, minus*PI/9.0));
   Point3 Pp90(1.0, 0.0, 0.0);
 
 
@@ -198,15 +205,15 @@ int main(int argc, char** argv) {
   float s0,s12,s23,s34,s45,s56,s67,s78,s89,s90;
   s0=1; //Initial Prior to origin.
 
-  s12=0.95;
-  s23=0.9;
-  s34=0.85;
+  s12=1;
+  s23=1;
+  s34=1;
   s45=0.8;
-  s56=0.75;
-  s67=0.7;
-  s78=0.65;
-  s89=0.6;
-  s90=0.55;
+  s56=0.5;
+  s67=1;
+  s78=1;
+  s89=1;
+  s90=1;
 
 
   //Unary priors
@@ -255,7 +262,7 @@ int main(int argc, char** argv) {
   // A prior factor consists of a mean and a noise model (covariance matrix)
 
   Moses3 priorMean(ScSO3(s0*R0.matrix()),Pp0.vector()); // prior at origin
-  noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 1));
+  noiseModel::Diagonal::shared_ptr priorNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01));
   graph.add(PriorFactor<Moses3>(1, priorMean, priorNoise));
   
 
@@ -279,21 +286,23 @@ int main(int argc, char** argv) {
 
   // 2b. Add "GPS-like" measurements
   // We will use our custom UnaryFactor for this.
-  noiseModel::Diagonal::shared_ptr unaryNoise = noiseModel::Diagonal::Sigmas((Vector(3) << 0.01, 0.01, 0.01)); // 10cm std on x,y
+  noiseModel::Diagonal::shared_ptr unaryNoise = noiseModel::Diagonal::Sigmas((Vector(3) << .1, .1, .1)); // 10cm std on x,y
 
 if(useUnary){
-  graphWithGPS.add(boost::make_shared<UnaryFactor>(1, Up1, unaryNoise));  
-  graphWithGPS.add(boost::make_shared<UnaryFactor>(2, Up2, unaryNoise));
-  graphWithGPS.add(boost::make_shared<UnaryFactor>(3, Up3, unaryNoise));
-  graphWithGPS.add(boost::make_shared<UnaryFactor>(4, Up4, unaryNoise));
+	
+  graphWithGPS.add(boost::make_shared<GPSFactor>(1, Up1, unaryNoise));  
+  graphWithGPS.add(boost::make_shared<GPSFactor>(2, Up2, unaryNoise));
+  graphWithGPS.add(boost::make_shared<GPSFactor>(3, Up3, unaryNoise));
+  
+  graphWithGPS.add(boost::make_shared<GPSFactor>(4, Up4, unaryNoise));
 
-  graphWithGPS.add(boost::make_shared<UnaryFactor>(5, Up5, unaryNoise));
-  graphWithGPS.add(boost::make_shared<UnaryFactor>(6, Up6, unaryNoise));
-  graphWithGPS.add(boost::make_shared<UnaryFactor>(7, Up7, unaryNoise));
+  graphWithGPS.add(boost::make_shared<GPSFactor>(5, Up5, unaryNoise));
+  graphWithGPS.add(boost::make_shared<GPSFactor>(6, Up6, unaryNoise));
+  graphWithGPS.add(boost::make_shared<GPSFactor>(7, Up7, unaryNoise));
 
-  graphWithGPS.add(boost::make_shared<UnaryFactor>(8, Up8, unaryNoise));
-  graphWithGPS.add(boost::make_shared<UnaryFactor>(9, Up9, unaryNoise));
-  graphWithGPS.add(boost::make_shared<UnaryFactor>(10, Up10, unaryNoise));
+  graphWithGPS.add(boost::make_shared<GPSFactor>(8, Up8, unaryNoise));
+  graphWithGPS.add(boost::make_shared<GPSFactor>(9, Up9, unaryNoise));
+  graphWithGPS.add(boost::make_shared<GPSFactor>(10, Up10, unaryNoise));
 
   cout << "GPS Points:"<<endl;
   cout << Up1<<endl;

@@ -361,6 +361,7 @@ public:
     }
 
     /// get translation
+    
     const Point3& translation() const { 
     	Point3 trans(this->Sim3::translation());
     	return trans; 

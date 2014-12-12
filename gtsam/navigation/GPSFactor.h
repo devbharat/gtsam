@@ -18,7 +18,7 @@
 #pragma once
 
 #include <gtsam/nonlinear/NonlinearFactor.h>
-#include <gtsam/geometry/Pose3.h>
+#include <gtsam/geometry/Moses3.h>
 
 namespace gtsam {
 
@@ -31,11 +31,11 @@ namespace gtsam {
  * See Farrell08book or e.g. http://www.dirsig.org/docs/new/coordinates.html
  * @addtogroup Navigation
  */
-class GTSAM_EXPORT GPSFactor: public NoiseModelFactor1<Pose3> {
+class GTSAM_EXPORT GPSFactor: public NoiseModelFactor1<Moses3> {
 
 private:
 
-  typedef NoiseModelFactor1<Pose3> Base;
+  typedef NoiseModelFactor1<Moses3> Base;
 
   Point3 nT_; ///< Position measurement in
 
@@ -57,7 +57,7 @@ public:
   /**
    * @brief Constructor from a measurement in a Cartesian frame.
    * Use GeographicLib to convert from geographic (latitude and longitude) coordinates
-   * @param key of the Pose3 variable that will be constrained
+   * @param key of the Moses3 variable that will be constrained
    * @param gpsIn measurement already in  coordinates
    * @param model Gaussian noise model
    */
@@ -83,7 +83,7 @@ public:
   /** implement functions needed to derive from Factor */
 
   /** vector of errors */
-  Vector evaluateError(const Pose3& p,
+  Vector evaluateError(const Moses3& p,
       boost::optional<Matrix&> H = boost::none) const;
 
   inline const Point3 & measurementIn() const {
@@ -94,10 +94,10 @@ public:
    *  Convenience funcion to estimate state at time t, given two GPS
    *  readings (in local NED Cartesian frame) bracketing t
    *  Assumes roll is zero, calculates yaw and pitch from NED1->NED2 vector.
-   */
-  static std::pair<Pose3, Vector3> EstimateState(double t1, const Point3& NED1,
+   
+  static std::pair<Moses3, Vector3> EstimateState(double t1, const Point3& NED1,
       double t2, const Point3& NED2, double timestamp);
-
+*/
 private:
 
   /** Serialization function */
