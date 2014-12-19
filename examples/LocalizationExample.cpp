@@ -154,10 +154,6 @@ int main(int argc, char** argv) {
 
 
 
-  // 2a. Add odometry factors
-  // For simplicity, we will use the same noise model for each odometry factor
-  noiseModel::Diagonal::shared_ptr odometryNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.2, 0.2, 0.1, 0.2, 0.2, 0.1, 0.1));
-  // Create odometry (Between) factors between consecutive poses
   
 
 	//cout << Rot3::rodriguez(0.0, 0.0, PI/2)<<endl;
@@ -205,15 +201,15 @@ int main(int argc, char** argv) {
   float s0,s12,s23,s34,s45,s56,s67,s78,s89,s90;
   s0=1; //Initial Prior to origin.
 
-  s12=1;
-  s23=1;
-  s34=1;
+  s12=0.95;
+  s23=0.9;
+  s34=0.85;
   s45=0.8;
-  s56=0.5;
-  s67=1;
-  s78=1;
-  s89=1;
-  s90=1;
+  s56=0.75;
+  s67=0.7;
+  s78=0.65;
+  s89=0.6;
+  s90=0.55;
 
 
   //Unary priors
@@ -268,6 +264,11 @@ int main(int argc, char** argv) {
 
 
 
+  // 2a. Add odometry factors
+  // For simplicity, we will use the same noise model for each odometry factor
+  noiseModel::Diagonal::shared_ptr odometryNoise = noiseModel::Diagonal::Sigmas((Vector(7) << 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 1));
+  // Create odometry (Between) factors between consecutive poses
+
   graph.add(BetweenFactor<Moses3>(1, 2, Moses3(ScSO3(s12*R12.matrix()),Pp12.vector()), odometryNoise));
   graph.add(BetweenFactor<Moses3>(2, 3, Moses3(ScSO3(s23*R23.matrix()),Pp23.vector()), odometryNoise));
   graph.add(BetweenFactor<Moses3>(3, 4, Moses3(ScSO3(s34*R34.matrix()),Pp34.vector()), odometryNoise));
@@ -286,7 +287,7 @@ int main(int argc, char** argv) {
 
   // 2b. Add "GPS-like" measurements
   // We will use our custom UnaryFactor for this.
-  noiseModel::Diagonal::shared_ptr unaryNoise = noiseModel::Diagonal::Sigmas((Vector(3) << .1, .1, .1)); // 10cm std on x,y
+  noiseModel::Diagonal::shared_ptr unaryNoise = noiseModel::Diagonal::Sigmas((Vector(3) << 10, 10, 10)); // 10cm std on x,y
 
 if(useUnary){
 	

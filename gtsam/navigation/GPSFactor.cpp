@@ -42,13 +42,27 @@ Vector GPSFactor::evaluateError(const Moses3& p,
     boost::optional<Matrix&> H) const {
   if (H) {
     H->resize(3, 7);
-    H->block < 3, 3 > (0, 0) << p.rotation_matrix();
+    H->block < 3, 3 > (0, 0) << p.scale()*p.rotation_matrix();
     H->block < 3, 3 > (0, 3) << zeros(3, 3);
-    H->block < 3, 1 > (0, 6) << ones(3, 1);
+    H->block < 3, 1 > (0, 6) << zeros(3, 1);              //Run tests on this!
   }
   // manifold equivalent of h(x)-z -> log(z,h(x))
   return nT_.localCoordinates(Point3(p.Sim3::translation()));
 }
+
+/***************************************************************************
+Vector GPSFactor::evaluateError(const Moses3& p,
+    boost::optional<Matrix&> H) const {
+  if (H) {
+    H->resize(3, 7);
+    H->block < 3, 3 > (0, 0) << p.rotation_matrix();
+    H->block < 3, 3 > (0, 3) << zeros(3, 3);
+    H->block < 3, 1 > (0, 6) << ones(3, 1);              //Run tests on this!
+  }
+  // manifold equivalent of h(x)-z -> log(z,h(x))
+  return nT_.localCoordinates(Point3(p.Sim3::translation()));
+}
+*/
 
 /***************************************************************************
 pair<Pose3, Vector3> GPSFactor::EstimateState(double t1, const Point3& NED1,
