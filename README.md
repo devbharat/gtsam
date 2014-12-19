@@ -1,3 +1,6 @@
+Forked originally from https://collab.cc.gatech.edu/borg/gtsam?destination=node%2F299#compile_wrapper
+Added Sim(3) Lie group types. Tested and implemented in FactorGraphs.
+
 README - Georgia Tech Smoothing and Mapping library
 ===================================================
 Version: Pre-Release 3.2.0
